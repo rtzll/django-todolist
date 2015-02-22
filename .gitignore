@@ -3,6 +3,7 @@
 *.egg
 *.egg-info
 *.db
+*.sqlite3
 .idea
 build
 docs/_build
