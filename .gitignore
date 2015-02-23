@@ -4,6 +4,7 @@
 *.egg-info
 *.db
 *.sqlite3
+*.dmp
 .idea
 build
 docs/_build
