@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- Basic Page Needs
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta charset="utf-8">
+  <title>Djodolist</title>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <!-- FONT
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
+
+{% load static %}
+
+  <!-- CSS
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="stylesheet" href="{% static 'lists/css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'lists/css/skeleton.css' %}">
+  <link rel="stylesheet" href="{% static 'lists/css/custom.css' %}">
+  {% block css %}{% endblock %}
+
+  <!-- Scripts
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static 'lists/js/site.js' %}"></script>
+  {% block js %}{% endblock %}
+
+  <!-- Favicon
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="icon" type="image/png" href="{% static 'lists/images/favicon.png' %}" />
+</head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <div class="container">
+
+    <!-- Navigation
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="navbar-spacer"></div>
+    <nav class="navbar">
+      <div class="container">
+        <ul class="navbar-list">
+          <li class="navbar-item"><a class="navbar-link" href="{% url 'lists:index' %}">Flodolist</a></li>
+          {% if not request.user.is_authenticated %}
+            <li class="navbar-item">
+              <a class="navbar-link" href="#">Login</a>
+          {% else %}
+            <li class="navbar-item">
+            <a class="navbar-link" href="#" data-popover="#moreNavPopover">{{ request.user.username }}</a>
+            <div id="moreNavPopover" class="popover">
+              <ul class="popover-list">
+                <li class="popover-item">
+                  <a class="popover-link" href="#">Your Todolists</a>
+                </li>
+                <li class="popover-item">
+                  <a class="popover-link" href="#">logout</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+  {% block body %}{% endblock %}
+
+  </div>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>
