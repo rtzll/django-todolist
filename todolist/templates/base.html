@@ -21,20 +21,20 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" href="{% static 'lists/css/normalize.css' %}">
-  <link rel="stylesheet" href="{% static 'lists/css/skeleton.css' %}">
-  <link rel="stylesheet" href="{% static 'lists/css/custom.css' %}">
+  <link rel="stylesheet" href="{% static 'css/normalize.css' %}">
+  <link rel="stylesheet" href="{% static 'css/skeleton.css' %}">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
   {% block css %}{% endblock %}
 
   <!-- Scripts
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-  <script type="text/javascript" src="{% static 'lists/js/site.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/site.js' %}"></script>
   {% block js %}{% endblock %}
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="{% static 'lists/images/favicon.png' %}" />
+  <link rel="icon" type="image/png" href="{% static 'images/favicon.png' %}" />
 </head>
 <body>
 
@@ -48,20 +48,20 @@
     <nav class="navbar">
       <div class="container">
         <ul class="navbar-list">
-          <li class="navbar-item"><a class="navbar-link" href="{% url 'lists:index' %}">Flodolist</a></li>
+          <li class="navbar-item"><a class="navbar-link" href="{% url 'lists:index' %}">Djodolist</a></li>
           {% if not request.user.is_authenticated %}
             <li class="navbar-item">
-              <a class="navbar-link" href="#">Login</a>
+              <a class="navbar-link" href="{% url 'auth:login' %}">Login</a>
           {% else %}
             <li class="navbar-item">
             <a class="navbar-link" href="#" data-popover="#moreNavPopover">{{ request.user.username }}</a>
             <div id="moreNavPopover" class="popover">
               <ul class="popover-list">
                 <li class="popover-item">
-                  <a class="popover-link" href="#">Your Todolists</a>
+                  <a class="popover-link" href="{% url 'lists:overview' %}">Your Todolists</a>
                 </li>
                 <li class="popover-item">
-                  <a class="popover-link" href="#">logout</a>
+                  <a class="popover-link" href="{% url 'auth:logout' %}">logout</a>
                 </li>
               </ul>
             </div>
