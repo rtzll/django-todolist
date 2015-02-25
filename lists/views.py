@@ -14,6 +14,10 @@ def todolist(request, todolist_id):
     return render(request, 'lists/todolist.html', {'todolist': todolist})
 
 
+def overview(request):
+    pass
+
+
 def new_todolist(request):
     form = TodoListForm()
     user = request.user.username if request.user.is_authenticated() else None
