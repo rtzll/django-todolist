@@ -22,6 +22,7 @@ def login_view(request):
 
     return render(request, 'lists/index.html', {'form': TodoForm()})
 
+
 def register(request):
     if request.method == 'POST':
         email = request.POST['email']
