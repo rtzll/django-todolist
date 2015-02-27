@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404, render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 
 from lists.models import TodoList
@@ -15,12 +16,13 @@ def todolist(request, todolist_id):
                   {'todolist': todolist, 'form': TodoForm()})
 
 
+@login_required
 def overview(request):
-    pass
-
-
-def stats(request):
-    return render(request, 'stats.html')
+    if request.method == 'POST':
+        todolist = None
+        # ...
+        return redirect('add_todolist', todolist)
+    return render(request, 'lists/overview.html', {'form': TodoListForm()})
 
 
 def new_todolist(request):
