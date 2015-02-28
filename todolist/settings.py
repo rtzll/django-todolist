@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'todolist',
     'lists',
     'accounts',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -84,3 +85,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Login settings
+
+LOGIN_URL = '/auth/login/'
+
+LOGOUT_URL = '/auth/logout/'
