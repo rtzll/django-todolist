@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block js %}
+<script src="{% static 'lists/js/jquery.tablesorter.min.js' %}"></script>
+<script type="text/javascript" id="js">
+$(document).ready(function() {
+  $("#todolist-overview-table").tablesorter({textExtraction: timeExtraction});
+});
+</script>
+{% endblock %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'lists/css/table.css' %}">
+{% endblock %}
+
+
+{% block body %}
+  <section class="header">
+    <h2 class="title">Todolist overview</h2>
+    <div class="row">
+      <div class="three columns value-prop"></div>
+      <div class="six columns">
+        <form action="{% url 'lists:new_todolist' %}" method=post>
+          {% csrf_token %}
+          <dl>
+              <dd>{{ form.description }}
+              <dt><input type="submit" class="button button-primary" value="Start one now">
+            </dl>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="u-full-width">
+        <h6 class="docs-header todolist-overview">All your todolists</h6>
+        <table id="todolist-overview-table" class="tablesorter">
+        <thead>
+        <tr>
+            <th style="width:50%">Todolist title</th>
+            <th># Open</th>
+            <th># Finished</th>
+            <th class="datetime">Created at</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for todolist in request.user.todolist_set() %}
+        <tr>
+            <td><a href="{% url 'lists:new_todolist' todolist_id=todolist.id %}">{{ todolist.title }}</a></td>
+            <td>{{ todolist.count_open() }}</td>
+            <td>{{ todolist.count_finished() }}</td>
+            <td>{{ todolist.created_at }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+{% endblock %}
