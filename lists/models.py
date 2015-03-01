@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class TodoList(models.Model):
     title = models.CharField(max_length=128, default='untitled')
     created_at = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, null=True)
 
     def __str__(self):
         return self.title
@@ -25,7 +25,7 @@ class Todo(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     finished_at = models.DateTimeField(null=True)
     is_finished = models.BooleanField(default=False)
-    creator = models.ForeignKey(User)
+    creator = models.ForeignKey(User, null=True)
     todolist = models.ForeignKey(TodoList)
 
     def __str__(self):
