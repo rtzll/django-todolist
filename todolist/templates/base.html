@@ -49,12 +49,12 @@
       <div class="container">
         <ul class="navbar-list">
           <li class="navbar-item"><a class="navbar-link" href="{% url 'lists:index' %}">Djodolist</a></li>
-          {% if not request.user.is_authenticated %}
+          {% if not user.is_authenticated %}
             <li class="navbar-item">
               <a class="navbar-link" href="{% url 'auth:login' %}">Login</a>
           {% else %}
             <li class="navbar-item">
-            <a class="navbar-link" href="#" data-popover="#moreNavPopover">{{ request.user.username }}</a>
+            <a class="navbar-link" href="#" data-popover="#moreNavPopover">{{ user.username }}</a>
             <div id="moreNavPopover" class="popover">
               <ul class="popover-list">
                 <li class="popover-item">
