@@ -16,9 +16,9 @@
         </div>
         <div class="row">
           <div class="one-half column open-todos">
-            <h6 class="docs-header open-todos">{{ todolist.count_open() }} open</h6>
+            <h6 class="docs-header open-todos">{{ todolist.count_open }} open</h6>
             <ul>
-              {% for todo in todolist.todo_set.all() %}
+              {% for todo in todolist.todo_set.all %}
                 {% if not todo.is_finished %}
                   <li><input type="checkbox" id="checkbox" data-todo-id="{{ todo.id }}"> {{ todo.description }}</a></li>
                 {% endif %}
@@ -26,9 +26,9 @@
             </ul>
           </div>
           <div class="one-half column finished-todos">
-            <h6 class="docs-header finished-todos">{{ todolist.count_finished() }} finished</h6>
+            <h6 class="docs-header finished-todos">{{ todolist.count_finished }} finished</h6>
             <ul>
-              {% for todo in todolist.todo_set.all() %}
+              {% for todo in todolist.todo_set.all %}
                 {% if todo.is_finished %}
                   <li><input type="checkbox" id="checkbox" data-todo-id="{{ todo.id }}" checked="checked">{{ todo.description }}</a></li>
                 {% endif %}
