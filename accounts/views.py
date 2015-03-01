@@ -19,7 +19,7 @@ def login_view(request):
     else:
         return render(request, 'accounts/login.html', {'form': LoginForm()})
 
-    return render(request, 'lists/index.html', {'form': TodoForm()})
+    return redirect('lists:index')
 
 
 def register(request):
