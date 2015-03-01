@@ -11,13 +11,13 @@ class TodoList(models.Model):
         return self.title
 
     def count(self):
-        self.todo_set.count()
+        return self.todo_set.count()
 
     def count_finished(self):
-        self.todo_set.filter(is_finished=True).count()
+        return self.todo_set.filter(is_finished=True).count()
 
-    def count_closed(self):
-        self.todo_set.filter(is_finished=False).count()
+    def count_open(self):
+        return self.todo_set.filter(is_finished=False).count()
 
 
 class Todo(models.Model):
