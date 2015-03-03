@@ -7,6 +7,9 @@ class TodoList(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     creator = models.ForeignKey(User, null=True)
 
+    class Meta:
+        ordering = ('created_at',)
+
     def __str__(self):
         return self.title
 
@@ -27,6 +30,9 @@ class Todo(models.Model):
     is_finished = models.BooleanField(default=False)
     creator = models.ForeignKey(User, null=True)
     todolist = models.ForeignKey(TodoList)
+
+    class Meta:
+        ordering = ('created_at',)
 
     def __str__(self):
         return self.description
