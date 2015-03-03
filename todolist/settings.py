@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'todolist',
     'lists',
     'accounts',
+    'rest_framework',
     'api',
 )
 
@@ -92,3 +93,11 @@ STATIC_URL = '/static/'
 LOGIN_URL = '/auth/login/'
 
 LOGOUT_URL = '/auth/logout/'
+
+
+# rest (api) framework
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
