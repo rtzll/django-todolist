@@ -5,5 +5,6 @@ from django.contrib import admin
 urlpatterns = patterns('',
     url(r'', include('lists.urls', namespace='lists')),
     url(r'^auth/', include('accounts.urls', namespace='auth')),
+    url(r'^api/', include('api.urls', namespace='api')),
     url(r'^admin/', include(admin.site.urls)),
 )
