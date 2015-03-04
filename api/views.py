@@ -9,8 +9,12 @@ from api.serializers import UserSerializer, TodoListSerializer
 from lists.models import TodoList
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    """API endpoint that allows users to be viewed or edited."""
+class UserList(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class UserDetail(generics.RetrieveAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
@@ -19,6 +23,9 @@ class TodoLists(generics.ListCreateAPIView):
 
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
 
 class TodoListDetail(generics.RetrieveUpdateDestroyAPIView):
 
