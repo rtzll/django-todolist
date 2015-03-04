@@ -1,11 +1,10 @@
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from rest_framework import viewsets
 
-from api.serializers import UserSerializer, TodolistSerializer
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import viewsets, status
+
+from api.serializers import UserSerializer, TodoListSerializer
 from lists.models import TodoList
 
 
@@ -15,51 +14,42 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-class JSONResponse(HttpResponse):
-    """An HttpResponse that renders its content into JSON."""
-    def __init__(self, data, **kwargs):
-        content = JSONRenderer().render(data)
-        kwargs['content_type'] = 'application/json'
-        super(JSONResponse, self).__init__(content, **kwargs)
-
-
-@csrf_exempt
+@api_view(['GET', 'POST'])
 def todolists(request):
     """List all todolists, or create a new todolist."""
+
     if request.method == 'GET':
         todolists = TodoList.objects.all()
-        serializer = TodolistSerializer(todolists, many=True)
-        return JSONResponse(serializer.data)
+        serializer = TodoListSerializer(todolists, many=True)
+        return Response(serializer.data)
 
     elif request.method == 'POST':
-        data = JSONParser().parse(request)
-        serializer = TodolistSerializer(data=data)
+        serializer = TodoListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data, status=201)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@csrf_exempt
+@api_view(['GET', 'PUT', 'DELETE'])
 def todolist_detail(request, pk):
     """Retrieve, update or delete a todolist."""
     try:
         todolist = TodoList.objects.get(pk=pk)
     except todolist.DoesNotExist:
-        return HttpResponse(status=404)
+        return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = TodoListSerializer(todolist)
-        return JSONResponse(serializer.data)
+        return Response(serializer.data)
 
     elif request.method == 'PUT':
-        data = JSONParser().parse(request)
-        serializer = TodoListSerializer(todolist, data=data)
+        serializer = TodoListSerializer(todolist, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return JSONResponse(serializer.data)
-        return JSONResponse(serializer.errors, status=400)
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     elif request.method == 'DELETE':
         todolist.delete()
-        return HttpResponse(status=204)
+        return Response(status=status.HTTP_204_NO_CONTENT)
