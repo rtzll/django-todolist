@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
 from django.http import Http404
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import viewsets, status
+from rest_framework import mixins
+from rest_framework import generics
+from rest_framework import viewsets
 
 from api.serializers import UserSerializer, TodoListSerializer
 from lists.models import TodoList
@@ -15,45 +15,31 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
+class TodoLists(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = TodoList.objects.all()
+    serializer_class = TodoListSerializer
 
-class TodoLists(APIView):
-    """List all todolists, or create a new todolist."""
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    def get(self, request):
-        todolists = TodoList.objects.all()
-        serializer = TodoListSerializer(todolists, many=True)
-        return Response(serializer.data)
-
-    def post(self, request):
-        serializer = TodoListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
-class TodoListDetail(APIView):
-    """Retrieve, update or delete a todolist."""
-    def get_object(self, pk):
-        try:
-            return TodoList.objects.get(pk=pk)
-        except TodoList.DoesNotExist:
-            raise Http404
+class TodoListDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    mixins.DestroyModelMixin,
+                    generics.GenericAPIView):
+    queryset = Snippet.objects.all()
+    serializer_class = SnippetSerializer
 
-    def get(self, request, pk):
-        todolist = self.get_object(pk)
-        serializer = TodoListSerializer(todolist)
-        return Response(serializer.data)
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
 
-    def put(self, request, pk):
-        todolist = self.get_object(pk)
-        serializer = TodoListSerializer(todolist, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
-    def delete(self, request, pk):
-        todolist = self.get_object(pk)
-        todolist.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
