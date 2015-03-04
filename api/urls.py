@@ -11,7 +11,7 @@ router.register(r'users', views.UserViewSet)
 
 urlpatterns = patterns('',
     url(r'^', include(router.urls)),
-    url(r'^todolists/$', views.todolists),
-    url(r'^todolists/(?P<pk>[0-9]+)/$', views.todolist_detail),
+    url(r'^todolists/$', views.TodoLists.as_view()),
+    url(r'^todolists/(?P<pk>[0-9]+)/$', views.TodoListDetail.as_view()),
     url(r'^api/', include('rest_framework.urls', namespace='rest_framework')),
 )

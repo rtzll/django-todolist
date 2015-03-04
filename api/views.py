@@ -1,6 +1,7 @@
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
+from django.http import Http404
 
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 
@@ -14,16 +15,16 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 
-@api_view(['GET', 'POST'])
-def todolists(request):
+
+class TodoLists(APIView):
     """List all todolists, or create a new todolist."""
 
-    if request.method == 'GET':
+    def get(self, request):
         todolists = TodoList.objects.all()
         serializer = TodoListSerializer(todolists, many=True)
         return Response(serializer.data)
 
-    elif request.method == 'POST':
+    def post(self, request):
         serializer = TodoListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -31,25 +32,28 @@ def todolists(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def todolist_detail(request, pk):
+class TodoListDetail(APIView):
     """Retrieve, update or delete a todolist."""
-    try:
-        todolist = TodoList.objects.get(pk=pk)
-    except todolist.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+    def get_object(self, pk):
+        try:
+            return TodoList.objects.get(pk=pk)
+        except TodoList.DoesNotExist:
+            raise Http404
 
-    if request.method == 'GET':
+    def get(self, request, pk):
+        todolist = self.get_object(pk)
         serializer = TodoListSerializer(todolist)
         return Response(serializer.data)
 
-    elif request.method == 'PUT':
+    def put(self, request, pk):
+        todolist = self.get_object(pk)
         serializer = TodoListSerializer(todolist, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
+    def delete(self, request, pk):
+        todolist = self.get_object(pk)
         todolist.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
