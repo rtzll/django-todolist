@@ -52,7 +52,7 @@ $(document).ready(function() {
         </tr>
         </thead>
         <tbody>
-        {% for todolist in user.todolist_set.all %}
+        {% for todolist in user.todolists.all %}
         <tr>
             <td><a href="{% url 'lists:todolist' todolist_id=todolist.id %}">{{ todolist.title }}</a></td>
             <td>{{ todolist.count_open }}</td>

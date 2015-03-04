@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'last_login', 'date_joined',
-                  'email', 'todolist_set')
+                  'email', 'todolists')
 
 class TodoListSerializer(serializers.ModelSerializer):
     class Meta:

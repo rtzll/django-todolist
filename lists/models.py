@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class TodoList(models.Model):
     title = models.CharField(max_length=128, default='untitled')
     created_at = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey(User, null=True)
+    creator = models.ForeignKey(User, null=True, related_name='todolists')
 
     class Meta:
         ordering = ('created_at',)
@@ -14,13 +14,13 @@ class TodoList(models.Model):
         return self.title
 
     def count(self):
-        return self.todo_set.count()
+        return self.todos.count()
 
     def count_finished(self):
-        return self.todo_set.filter(is_finished=True).count()
+        return self.todos.filter(is_finished=True).count()
 
     def count_open(self):
-        return self.todo_set.filter(is_finished=False).count()
+        return self.todos.filter(is_finished=False).count()
 
 
 class Todo(models.Model):
@@ -28,8 +28,8 @@ class Todo(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     finished_at = models.DateTimeField(null=True)
     is_finished = models.BooleanField(default=False)
-    creator = models.ForeignKey(User, null=True)
-    todolist = models.ForeignKey(TodoList)
+    creator = models.ForeignKey(User, null=True, related_name='todos')
+    todolist = models.ForeignKey(TodoList, related_name='todos')
 
     class Meta:
         ordering = ('created_at',)
