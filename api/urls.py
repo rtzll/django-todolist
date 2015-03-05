@@ -1,12 +1,15 @@
 from django.conf.urls import url, include, patterns
 
+from rest_framework.routers import DefaultRouter
+
 from api import views
 
+router = DefaultRouter()
+router.register(r'todolists', views.TodoListViewSet)
+router.register(r'users', views.UserViewSet)
 
 urlpatterns = patterns('',
-    url(r'^users/$', views.UserList.as_view()),
-    url(r'^users/(?P<pk>[0-9]+)/$', views.UserDetail.as_view()),
-    url(r'^todolists/$', views.TodoLists.as_view()),
-    url(r'^todolists/(?P<pk>[0-9]+)/$', views.TodoListDetail.as_view()),
-    url(r'^api/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^', include(router.urls)),
+    url(r'^auth/', include('rest_framework.urls',
+                           namespace='rest_framework')),
 )
