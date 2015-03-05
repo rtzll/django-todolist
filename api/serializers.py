@@ -6,12 +6,11 @@ from lists.models import TodoList
 
 class UserSerializer(serializers.ModelSerializer):
 
-    # todolists = serializers.HyperlinkedRelatedField(
-    #     many=True, view_name='todolist-list', read_only=True)
+    todolists = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=TodoList.objects.all())
     class Meta:
         model = User
-        fields = ('url', 'username', 'last_login', 'date_joined',
-                  'email')  #, 'todolists')
+        fields = ('id', 'username', 'last_login', 'date_joined', 'todolists')
 
 
 class TodoListSerializer(serializers.ModelSerializer):
