@@ -34,7 +34,8 @@ class TodoListTests(APITestCase):
         todolist_id = post_response.data['id']
         self.assertEqual(todolist_id, 1)
         get_response = self.client.get(
-            '/api/todolists/{0}/'.format(todolist_id))
+            '/api/todolists/{0}/'.format(todolist_id)
+        )
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         # check todolist
         self.assertEqual(get_response.data, post_response.data)
@@ -65,3 +66,20 @@ class TodoListTests(APITestCase):
             'Authentication credentials were not provided.'
         )
 
+    def test_put_todolist(self):
+        # add todolist
+        post_response = self.post_new_todolist(self.test_data)
+        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
+        # put todolist
+        todolist_id = post_response.data['id']
+        put_data = post_response.data
+        put_data['title'] = 'changed title'
+        put_response = self.client.put(
+            '/api/todolists/{0}/'.format(todolist_id), put_data, format='json'
+        )
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
+        get_response = self.client.get(
+            '/api/todolists/{0}/'.format(todolist_id)
+        )
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(get_response.data['title'], 'changed title')
