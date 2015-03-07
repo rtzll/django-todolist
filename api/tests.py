@@ -175,7 +175,7 @@ class TodoTests(APITestCase):
             'Authentication credentials were not provided.'
         )
 
-    def test_put_todolist(self):
+    def test_put_todo(self):
         # add todo
         post_response = self.post_new_todo(self.test_data)
         self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
