@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 
 from rest_framework import permissions, viewsets
 
-from api.serializers import UserSerializer, TodoListSerializer
-from lists.models import TodoList
+from api.serializers import UserSerializer, TodoListSerializer, TodoSerializer
+from lists.models import TodoList, Todo
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -16,6 +16,16 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializer
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def perform_create(self, serializer):
+        serializer.save(creator=self.request.user)
+
+
+class TodoViewSet(viewsets.ModelViewSet):
+
+    queryset = Todo.objects.all()
+    serializer_class = TodoSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def perform_create(self, serializer):
