@@ -195,6 +195,26 @@ class TodoTests(APITestCase):
             get_response.data['description'], 'changed description'
         )
 
+    def test_put_todo_changing_status(self):
+        # add todo
+        post_response = self.post_new_todo(self.test_data)
+        self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
+        # put todo
+        todo_id = post_response.data['id']
+        put_data = post_response.data
+        put_data['is_finished'] = True
+        put_response = self.client.put(
+            '/api/todos/{0}/'.format(todo_id), put_data, format='json'
+        )
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
+        get_response = self.client.get(
+            '/api/todos/{0}/'.format(todo_id)
+        )
+        self.assertEqual(put_response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            get_response.data['is_finished'], True
+        )
+
     def test_delete_todo(self):
         # add todo
         post_response = self.post_new_todo(self.test_data)
