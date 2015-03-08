@@ -11,9 +11,9 @@ To try out the app yourself install the requirements (works with Python 2 and 3)
 ```
 pip install django djangorestframework
 ```
-Make migrations and apply them:
+Migrate:
 ```
-python manage.py makemigrations && python manage.py migrate
+python manage.py migrate
 ```
 And then start the server (default: http://localhost:8000)
 ```
