@@ -73,30 +73,30 @@ $(document).ready(function() {
   $(':checkbox').on('click', changeTodoStatus);
 
   function changeTodoStatus() {
-    if($('#checkbox').is(':checked')) {
-      finishTodo(this);
+    if($(this).is(':checked')) {
+      putNewStatus(this.getAttribute('data-todo-id'), true);
     } else {
-      reopenTodo(this);
+      putNewStatus(this.getAttribute('data-todo-id'), false);
     }
   }
 
-  function finishTodo(checkbox) {
-    putStatusUpdate(checkbox.getAttribute('data-todo-id'), 'finished');
-  }
-
-  function reopenTodo(checkbox) {
-    putStatusUpdate(checkbox.getAttribute('data-todo-id'), 'reopen');
-  }
-
-  function putStatusUpdate(todoID, status) {
-    $.ajax({
-      url: '/api/todo/' + todoID + '/',
-      type: 'PUT',
-      contentType:  'application/json',
-      data: JSON.stringify({'status': status}),
-      success: function() {
-        location.reload();
+  function putNewStatus(todoID, isFinished) {
+    todoURL = '/api/todos/' + todoID + '/'
+    $.getJSON(todoURL, function(data) {
+      data.is_finished = isFinished;
+      if (isFinished) {
+        data.finished_at = moment().toISOString();
       }
+      console.log(JSON.stringify(data));
+      $.ajax({
+        url: todoURL,
+        type: 'PUT',
+        contentType: 'application/json',
+        data: {'id': '12'}, // data,
+        success: function() {
+          location.reload();
+        }
+      });
     });
   }
 
