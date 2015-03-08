@@ -7,9 +7,13 @@ A lot of the code here comes from another project I did. Where I build a web app
 
 
 ### Explore
-To try out the app yourself install the requirements (works on Python2 and Python3)
+To try out the app yourself install the requirements (works with Python 2 and 3)
 ```
 pip install django djangorestframework
+```
+Make migrations and apply them:
+```
+python manage.py makemigrations && python manage.py migrate
 ```
 And then start the server (default: http://localhost:8000)
 ```
@@ -19,9 +23,13 @@ python manage.py runserver
 Now you can browse the API:
 http://localhost:8000/api/
 
+Or start on the landing page:
+http://localhost:8000/
+
 
 ### Note
-I'm currently working on this, so a lot of things that are found in the Flask version are still missing. As of know I'm not sure to which degree I'll copy the functionality or maybe deviate to do some other features, that haven been released in the Flask version.
+Currently some of the things that can be found in the Flask version are still missing.
+I try to stay close to the idea, but will use whatever Django has to offer.
 
 ### License (MIT)
 See LICENSE
