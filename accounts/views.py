@@ -33,8 +33,9 @@ def register(request):
         User.objects.create_user(username, email=email, password=password)
         return redirect('auth:login')
     else:
-        return render(request, 'accounts/register.html',
-                      {'form': RegistrationForm()})
+        return render(
+            request, 'accounts/register.html', {'form': RegistrationForm()}
+        )
 
 
 def logout_view(request):
