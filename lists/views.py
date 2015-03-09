@@ -12,6 +12,7 @@ def index(request):
 
 def todolist(request, todolist_id):
     if request.method == 'POST':
+        todolist = get_object_or_404(TodoList, pk=todolist_id)
         form = TodoForm(request.POST)
         if form.is_valid():
             user = request.user if request.user.is_authenticated() else None
@@ -20,9 +21,10 @@ def todolist(request, todolist_id):
             todo.save()
         # else: show error messge
 
-    todolist = get_object_or_404(TodoList, pk=todolist_id)
-    return render(request, 'lists/todolist.html',
-                  {'todolist': todolist, 'form': TodoForm()})
+    return render(
+        request, 'lists/todolist.html',
+        {'todolist': todolist, 'form': TodoForm()}
+    )
 
 
 @login_required
@@ -32,6 +34,7 @@ def overview(request):
         if form.is_valid():
             todolist = TodoList(title=request.POST['title'])
             return redirect('add_todolist', todolist)
+        # else: show error message
     return render(request, 'lists/overview.html', {'form': TodoListForm()})
 
 
@@ -48,14 +51,10 @@ def new_todolist(request):
             todo.save()
             return redirect('lists:todolist', todolist_id=todolist.id)
         # else: show error message
-
     return render(request, 'lists/index.html', {'form': TodoForm()})
 
 
 def add_todolist(request):
-
-    user = request.user if request.user.is_authenticated() else None
-
     if request.method == 'POST':
         form = TodoListForm(request.POST)
         if form.is_valid():
@@ -64,5 +63,4 @@ def add_todolist(request):
             todolist.save()
             return redirect('lists:todolist', todolist_id=todolist.id)
         # else: show error message
-
     return render(request, 'lists/index.html', {'form': TodoForm()})
