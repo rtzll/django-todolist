@@ -54,4 +54,7 @@ class AccountsTests(TestCase):
         # no user logged in anymore
         self.assertFalse('_auth_user_id' in self.client.session)
 
+
 # TODO add class testing the forms specifically
+class AccountFormsTests(TestCase):
+    pass
