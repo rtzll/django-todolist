@@ -46,9 +46,12 @@ class AccountsTests(TestCase):
         self.assertEqual(self.client.session['_auth_user_id'], 1)
 
     # TODO add erroneous test cases for login and register (invalid data)
+    # check if correct error is displayed/ form.errors is correct
 
     def test_logout(self):
         response = self.client.get(reverse('auth:logout'))
         self.assertEqual(response.status_code, 302)
         # no user logged in anymore
         self.assertFalse('_auth_user_id' in self.client.session)
+
+# TODO add class testing the forms specifically
