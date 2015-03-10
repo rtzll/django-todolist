@@ -22,3 +22,12 @@ class RegistrationForm(forms.Form):
     password_confirmation = forms.CharField(label='', max_length=64,
         widget=forms.PasswordInput(attrs=widget_attrs('Password confirmation')
     ))
+
+    def clean(self):
+        password = self.cleaned_data.get('password')
+        password_confirmation = self.cleaned_data.get('password_confirmation')
+
+        if password and password != password_confirmation:
+            raise forms.ValidationError("Passwords don't match")
+
+        return self.cleaned_data
