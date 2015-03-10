@@ -1,8 +1,10 @@
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django import forms
 
 from accounts.forms import RegistrationForm, LoginForm
+
 
 class AccountsTests(TestCase):
 
@@ -55,6 +57,68 @@ class AccountsTests(TestCase):
         self.assertFalse('_auth_user_id' in self.client.session)
 
 
-# TODO add class testing the forms specifically
-class AccountFormsTests(TestCase):
+class LoginFormTests(TestCase):
+
+    def setUp(self):
+        self.valid_form_data = {'username': 'test', 'password': 'test'}
+        self.too_long_password = {'username': 'test', 'password': 65 * 'X'}
+        self.too_long_username = {'username': 65 * 'X', 'password': 'test'}
+
+    def test_valid_input(self):
+        form = LoginForm(self.valid_form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_too_long_username(self):
+        # python 3.5 {**valid_username_dict, **invalid_password_dict}
+        form = LoginForm(self.too_long_username)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'username': [u'Ensure this value has at most 64' +\
+                          ' characters (it has 65).']}
+        )
+
+    def test_too_long_password(self):
+        form = LoginForm(self.too_long_password)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'password': [u'Ensure this value has at most 64' +\
+                          ' characters (it has 65).']}
+        )
+
+    def test_no_username(self):
+        form = LoginForm({'password': 'test'})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'username': [u'This field is required.']}
+        )
+
+    def test_no_password(self):
+        form = LoginForm({'username': 'test'})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'password': [u'This field is required.']}
+        )
+
+    def test_empty_username(self):
+        form = LoginForm({'username': '', 'password': 'test'})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'username': [u'This field is required.']}
+        )
+
+    def test_empty_password(self):
+        form = LoginForm({'username': 'test', 'password': ''})
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'password': [u'This field is required.']}
+        )
+
+
+class RegistrationFormTests(TestCase):
     pass
