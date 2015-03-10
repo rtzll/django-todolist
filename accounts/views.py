@@ -8,13 +8,16 @@ from lists.forms import TodoForm
 
 def login_view(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return redirect('lists:index')
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('lists:index')
         # else: show error message
     else:
         return render(request, 'accounts/login.html', {'form': LoginForm()})
@@ -24,14 +27,15 @@ def login_view(request):
 
 def register(request):
     if request.method == 'POST':
-        email = request.POST['email']
-        username = request.POST['username']
-        password = request.POST['password']
-        password_confirmation = request.POST['password_confirmation']
-        # TODO add proper password check
-        assert password == password_confirmation
-        User.objects.create_user(username, email=email, password=password)
-        return redirect('auth:login')
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            User.objects.create_user(
+                username=request.POST['username'],
+                email=request.POST['email'],
+                password=request.POST['password']
+            )
+            return redirect('auth:login')
+        # else: show error message
     else:
         return render(
             request, 'accounts/register.html', {'form': RegistrationForm()}
