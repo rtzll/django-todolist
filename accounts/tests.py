@@ -69,7 +69,6 @@ class LoginFormTests(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_too_long_username(self):
-        # python 3.5 {**valid_username_dict, **invalid_password_dict}
         form = LoginForm(self.too_long_username)
         self.assertFalse(form.is_valid())
         self.assertEqual(
@@ -121,4 +120,44 @@ class LoginFormTests(TestCase):
 
 
 class RegistrationFormTests(TestCase):
-    pass
+
+    def setUp(self):
+        self.valid_form_data = {
+            'email': 'test@example.com',
+            'username': 'test',
+            'password': 'test',
+            'password_confirmation': 'test'
+        }
+        self.invalid_email = {
+            'email': 'test(at)example.com',
+            'username': 'test',
+            'password': 'test',
+            'password_confirmation': 'test'
+        }
+        self.non_matching_passwords = {
+            'email': 'test@example.com',
+            'username': 'test',
+            'password': 'test1',
+            'password_confirmation': 'test2'
+        }
+
+    # some tests can be skipped because of the coverage of LoginFormTests
+    def test_valid_input(self):
+        form = RegistrationForm(self.valid_form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_email(self):
+        form = RegistrationForm(self.invalid_email)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'email': [u'Enter a valid email address.']}
+        )
+
+    def test_non_matching_passwords(self):
+        form = RegistrationForm(self.non_matching_passwords)
+        self.assertFalse(form.is_valid())
+        self.assertEqual(
+            form.errors,
+            {'__all__': [u"Passwords don't match"]}
+        )
