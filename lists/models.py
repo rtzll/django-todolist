@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.utils import timezone
+
 
 class TodoList(models.Model):
     title = models.CharField(max_length=128, default='untitled')
@@ -36,3 +38,13 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.description
+
+    def close(self):
+        self.is_finished = True
+        self.finished_at = timezone.now()
+        self.save()
+
+    def reopen(self):
+        self.is_finished = False
+        self.finished_at = None
+        self.save()
