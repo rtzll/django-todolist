@@ -61,10 +61,12 @@ $(document).ready(function() {
   }
 
   function onScroll() {
-    if(navOffsetTop < $window.scrollTop() && !$body.hasClass('has-docked-nav')) {
+    if(navOffsetTop < $window.scrollTop() &&
+      !$body.hasClass('has-docked-nav')) {
       $body.addClass('has-docked-nav')
     }
-    if(navOffsetTop > $window.scrollTop() && $body.hasClass('has-docked-nav')) {
+    if(navOffsetTop > $window.scrollTop() &&
+      $body.hasClass('has-docked-nav')) {
       $body.removeClass('has-docked-nav')
     }
   }
@@ -96,7 +98,7 @@ $(document).ready(function() {
         }
       }
     });
-    // send put request using the get data
+    // send put request using the data of the get for the same id
     var todoURL = '/api/todos/' + todoID + '/'
     $.getJSON(todoURL, function(data) {
       data.is_finished = isFinished;
@@ -116,7 +118,7 @@ $(document).ready(function() {
     });
   }
 
-  // function form the django docs
+  // function from the django docs
   function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie != '') {
@@ -125,7 +127,9 @@ $(document).ready(function() {
             var cookie = jQuery.trim(cookies[i]);
             // Does this cookie string begin with the name we want?
             if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                cookieValue = decodeURIComponent(
+                  cookie.substring(name.length + 1)
+                );
                 break;
             }
         }
