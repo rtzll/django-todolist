@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 
+{% load static %}
 {% block js %}
 <script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+<script src="{% static 'lists/js/lists.js' %}"></script>
 {% endblock %}
 
 {% block body %}
