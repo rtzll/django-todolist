@@ -16,7 +16,7 @@ $(document).ready(function() {
     $('a[href^="#"]').on('click', smoothScroll);
     $('input[type=text]:first').focus();
     $('input[type=text]:first').on('keypress click', function() {
-        $('.has-error').hide();
+        $('ul.errorlist').hide();
     });
   }
 
