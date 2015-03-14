@@ -52,6 +52,8 @@ function putNewStatus(todoID, isFinished) {
     data.is_finished = isFinished;
     if (isFinished) {
       data.finished_at = moment().toISOString();
+    }else{
+      data.finished_at = null;
     }
     console.log(JSON.stringify(data));
     $.ajax({
