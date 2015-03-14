@@ -18,7 +18,8 @@ def login_view(request):
                 if user.is_active:
                     login(request, user)
                     return redirect('lists:index')
-        # else: show error message
+        else:
+            return render(request, 'accounts/login.html', {'form': form})
     else:
         return render(request, 'accounts/login.html', {'form': LoginForm()})
 
@@ -35,7 +36,8 @@ def register(request):
                 password=request.POST['password']
             )
             return redirect('auth:login')
-        # else: show error message
+        else:
+            return render(request, 'accounts/register.html', {'form': form})
     else:
         return render(
             request, 'accounts/register.html', {'form': RegistrationForm()}
