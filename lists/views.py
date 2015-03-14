@@ -19,7 +19,11 @@ def todolist(request, todolist_id):
             todo = Todo(description=request.POST['description'],
                         todolist_id=todolist_id, creator=user)
             todo.save()
-        # else: show error messge
+        else:
+            return render(
+                request, 'lists/todolist.html',
+                {'todolist': todolist, 'form': form}
+            )
 
     return render(
         request, 'lists/todolist.html',
@@ -36,7 +40,8 @@ def overview(request):
                 title=request.POST['title'], creator=request.user
             )
             return redirect('add_todolist', todolist)
-        # else: show error message
+        else:
+            return render(request, 'lists/overview.html', {'form': form})
     return render(request, 'lists/overview.html', {'form': TodoListForm()})
 
 
@@ -52,7 +57,9 @@ def new_todolist(request):
                         todolist_id=todolist.id, creator=user)
             todo.save()
             return redirect('lists:todolist', todolist_id=todolist.id)
-        # else: show error message
+        else:
+            return render(request, 'lists/index.html', {'form': form})
+
     return render(request, 'lists/index.html', {'form': TodoForm()})
 
 
@@ -64,5 +71,7 @@ def add_todolist(request):
             todolist = TodoList(title=request.POST['title'], creator=user)
             todolist.save()
             return redirect('lists:todolist', todolist_id=todolist.id)
-        # else: show error message
+        else:
+            return render(request, 'lists/overview.html', {'form': form})
+
     return render(request, 'lists/index.html', {'form': TodoForm()})
