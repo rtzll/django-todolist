@@ -60,7 +60,7 @@ function putNewStatus(todoID, isFinished) {
       url: todoURL,
       type: 'PUT',
       contentType: 'application/json',
-      data: data,
+      data: JSON.stringify(data),
       success: function() {
         location.reload();
       }
