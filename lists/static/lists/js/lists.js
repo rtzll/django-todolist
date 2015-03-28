@@ -55,7 +55,6 @@ function putNewStatus(todoID, isFinished) {
     }else{
       data.finished_at = null;
     }
-    console.log(JSON.stringify(data));
     $.ajax({
       url: todoURL,
       type: 'PUT',
