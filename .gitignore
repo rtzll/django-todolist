@@ -13,7 +13,7 @@ __pycache__
 *.sublime-project
 *.sublime-workspace
 
-# test, build, etc
+# test, build, log
 build
 docs/_build
 dist
