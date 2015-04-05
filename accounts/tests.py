@@ -52,9 +52,8 @@ class AccountsTests(TestCase):
         # change username for invalid post
         login_data = {'username': 65 * 'X', 'password': 'test'}
         response = self.client.post(reverse('auth:login'), data=login_data)
-        self.assertEqual(response.status_code, 200)
         error_message = 'Ensure this value has at most 64 characters'
-        self.assertContains(response, error_message)
+        self.assertContains(response, error_message, status_code=200)
 
     def test_faulty_register(self):
         # change username for invalid post
@@ -62,9 +61,8 @@ class AccountsTests(TestCase):
         response = self.client.post(
             reverse('auth:register'), data=self.register_data
         )
-        self.assertEqual(response.status_code, 200)
         error_message = 'Ensure this value has at most 64 characters'
-        self.assertContains(response, error_message)
+        self.assertContains(response, error_message, status_code=200)
 
     def test_logout(self):
         response = self.client.get(reverse('auth:logout'))
