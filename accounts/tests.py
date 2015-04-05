@@ -9,6 +9,12 @@ from accounts.forms import RegistrationForm, LoginForm
 class AccountsTests(TestCase):
 
     def setUp(self):
+        self.register_data = {
+            'email': 'new@user.com',
+            'username': 'new_user',
+            'password': 'test',
+            'password_confirmation': 'test'
+        }
         User.objects.create_user('test', 'test@example.com', 'test')
 
     def tearDown(self):
@@ -25,14 +31,8 @@ class AccountsTests(TestCase):
         self.assertIsInstance(response.context['form'], LoginForm)
 
     def test_register(self):
-        register_data = {
-            'email': 'new@user.com',
-            'username': 'new_user',
-            'password': 'test',
-            'password_confirmation': 'test'
-        }
         response = self.client.post(
-            reverse('auth:register'), data=register_data
+            reverse('auth:register'), data=self.register_data
         )
         self.assertEqual(response.status_code, 302)
         # new user was created
@@ -45,10 +45,26 @@ class AccountsTests(TestCase):
         response = self.client.post(reverse('auth:login'), data=login_data)
         self.assertEqual(response.status_code, 302)
         # user is logged in
-        self.assertEqual(self.client.session['_auth_user_id'], 1)
+        self.assertEqual(self.client.session['_auth_user_id'], '1')
 
-    # TODO add erroneous test cases for login and register (invalid data)
-    # check if correct error is displayed/ form.errors is correct
+    # check if error messages are part of the response
+    def test_faulty_login(self):
+        # change username for invalid post
+        login_data = {'username': 65 * 'X', 'password': 'test'}
+        response = self.client.post(reverse('auth:login'), data=login_data)
+        self.assertEqual(response.status_code, 200)
+        error_message = 'Ensure this value has at most 64 characters'
+        self.assertContains(response, error_message)
+
+    def test_faulty_register(self):
+        # change username for invalid post
+        self.register_data['username'] = 65 * 'X'
+        response = self.client.post(
+            reverse('auth:register'), data=self.register_data
+        )
+        self.assertEqual(response.status_code, 200)
+        error_message = 'Ensure this value has at most 64 characters'
+        self.assertContains(response, error_message)
 
     def test_logout(self):
         response = self.client.get(reverse('auth:logout'))
