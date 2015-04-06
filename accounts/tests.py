@@ -173,5 +173,5 @@ class RegistrationFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors,
-            {'__all__': [u"Passwords don't match"]}
+            {'__all__': [u"Passwords don't match."]}
         )
