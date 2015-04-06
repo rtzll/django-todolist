@@ -7,7 +7,9 @@ from lists.models import TodoList, Todo
 class UserSerializer(serializers.ModelSerializer):
 
     todolists = serializers.PrimaryKeyRelatedField(
-        many=True, queryset=TodoList.objects.all())
+        many=True, queryset=TodoList.objects.all()
+    )
+
     class Meta:
         model = User
         fields = ('id', 'username', 'last_login', 'date_joined', 'todolists')
@@ -16,6 +18,7 @@ class UserSerializer(serializers.ModelSerializer):
 class TodoListSerializer(serializers.ModelSerializer):
 
     creator = serializers.ReadOnlyField(source='creator.username')
+
     class Meta:
         model = TodoList
         fields = ('id', 'title', 'created_at', 'creator', 'todos')
@@ -24,6 +27,7 @@ class TodoListSerializer(serializers.ModelSerializer):
 class TodoSerializer(serializers.ModelSerializer):
 
     creator = serializers.ReadOnlyField(source='creator.username')
+
     class Meta:
         model = Todo
         fields = (

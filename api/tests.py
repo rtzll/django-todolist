@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase
 
 from lists.models import TodoList
 
+
 class UserTests(APITestCase):
 
     def setUp(self):
@@ -76,7 +77,6 @@ class TodoListTests(APITestCase):
     def test_get_non_existent_todolist(self):
         response = self.client.get('/api/todolists/0/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
 
     def test_post_when_not_logged_in(self):
         # make sure the user is logged out
@@ -185,7 +185,6 @@ class TodoTests(APITestCase):
     def test_get_non_existent_todo(self):
         response = self.client.get('/api/todo/0/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
-
 
     def test_post_when_not_logged_in(self):
         # make sure the user is logged out
