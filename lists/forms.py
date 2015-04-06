@@ -5,23 +5,17 @@ def widget_attrs(placeholder):
     return {'class': 'u-full-width', 'placeholder': placeholder}
 
 
-def form_kwargs(widget, max_length=128):
-    return {'widget': widget, 'max_length': max_length}
-
-
 class TodoForm(forms.Form):
     description = forms.CharField(
-        form_kwargs(
-            widget=forms.TextInput(attrs=widget_attrs('Enter your todo'))
-        )
+        max_length=128,
+        widget=forms.TextInput(attrs=widget_attrs('Enter your todo'))
     )
 
 
 class TodoListForm(forms.Form):
     title = forms.CharField(
-        form_kwargs(
-            widget=forms.TextInput(
-                attrs=widget_attrs('Enter a title to start a new todolist')
-            )
+        max_length=128,
+        widget=forms.TextInput(
+            attrs=widget_attrs('Enter a title to start a new todolist')
         )
     )
