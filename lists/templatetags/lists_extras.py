@@ -40,13 +40,17 @@ def humanize_time(dt, past_='ago', future_='from now', default='just now'):
     for period, singular, plural in periods:
 
         if period:
-            return '%d %s %s' % (period, \
-                singular if period == 1 else plural, \
-                past_ if dt_is_past else future_)
+            return '%d %s %s' % (
+                period,
+                singular if period == 1 else plural,
+                past_ if dt_is_past else future_
+            )
 
     return default
 
 
 @register.filter('in_seconds')
 def in_seconds(dt):
-    return int((dt.replace(tzinfo=None)-datetime(1970, 1, 1)).total_seconds())
+    return int(
+        (dt.replace(tzinfo=None) - datetime(1970, 1, 1)).total_seconds()
+    )

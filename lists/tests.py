@@ -114,7 +114,7 @@ class TodoListFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors,
-            {'title': [u'Ensure this value has at most 128 ' + \
+            {'title': [u'Ensure this value has at most 128 ' +
                        'characters (it has 129).']}
         )
 
@@ -154,7 +154,7 @@ class TodoFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors,
-            {'description': [u'Ensure this value has at most 128 ' + \
+            {'description': [u'Ensure this value has at most 128 ' +
                              'characters (it has 129).']}
         )
 
@@ -188,7 +188,6 @@ class ListModelTests(TestCase):
         )
         new_todo.save()
         self.assertEqual(self.todolist.count(), 2)
-
 
     def test_count_open_todos(self):
         self.assertEqual(self.todolist.count_open(), 1)
