@@ -12,10 +12,10 @@ def form_kwargs(widget, label='', max_length=64):
 class LoginForm(forms.Form):
 
     username = forms.CharField(
-        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
+        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
     )
     password = forms.CharField(
-        form_kwargs(
+        **form_kwargs(
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
@@ -24,19 +24,19 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.Form):
 
     email = forms.EmailField(
-        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
+        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
     )
     username = forms.CharField(
-        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
+        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
     )
 
     password = forms.CharField(
-        form_kwargs(
+        **form_kwargs(
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
     password_confirmation = forms.CharField(
-        form_kwargs(
+        **form_kwargs(
             widget=forms.PasswordInput(
                 attrs=widget_attrs('Password confirmation')
             )
