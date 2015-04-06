@@ -87,7 +87,7 @@ class LoginFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors,
-            {'username': [u'Ensure this value has at most 64' +\
+            {'username': [u'Ensure this value has at most 64' +
                           ' characters (it has 65).']}
         )
 
@@ -96,7 +96,7 @@ class LoginFormTests(TestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors,
-            {'password': [u'Ensure this value has at most 64' +\
+            {'password': [u'Ensure this value has at most 64' +
                           ' characters (it has 65).']}
         )
 
