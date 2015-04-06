@@ -5,17 +5,17 @@ def widget_attrs(placeholder):
     return {'class': 'u-full-width', 'placeholder': placeholder}
 
 
-def forms_kwargs(widget, label='', max_length=64):
+def form_kwargs(widget, label='', max_length=64):
     return {'widget': widget, 'label': label, 'max_length': max_length}
 
 
 class LoginForm(forms.Form):
 
     username = forms.CharField(
-        forms_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
+        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
     )
     password = forms.CharField(
-        forms_kwargs(
+        form_kwargs(
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
@@ -24,19 +24,19 @@ class LoginForm(forms.Form):
 class RegistrationForm(forms.Form):
 
     email = forms.EmailField(
-        forms_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
+        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
     )
     username = forms.CharField(
-        forms_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
+        form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
     )
 
     password = forms.CharField(
-        forms_kwargs(
+        form_kwargs(
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
     password_confirmation = forms.CharField(
-        forms_kwargs(
+        form_kwargs(
             widget=forms.PasswordInput(
                 attrs=widget_attrs('Password confirmation')
             )
