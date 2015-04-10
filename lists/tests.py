@@ -70,7 +70,7 @@ class ListTests(TestCase):
     def test_get_todolist_overview_redirect_when_not_logged_in(self):
         self.client.logout()
         response = self.client.get(reverse('lists:overview'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/auth/login/?next=/todolists/')
 
     def test_add_todolist_to_todolist_overview(self):
         response = self.client.post(
