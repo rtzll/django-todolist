@@ -72,12 +72,14 @@ class ListTests(TestCase):
         response = self.client.get(reverse('lists:overview'))
         self.assertEqual(response.status_code, 302)
 
-    @skip('obscure reverse lookup')
     def test_add_todolist_to_todolist_overview(self):
         response = self.client.post(
             reverse('lists:overview'), {'title': 'some title'}
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, '/todolist/add/',
+            target_status_code=302, fetch_redirect_response=False
+        )
 
 
 class TodoListFormTests(TestCase):
