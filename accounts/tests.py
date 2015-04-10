@@ -34,7 +34,7 @@ class AccountsTests(TestCase):
         response = self.client.post(
             reverse('auth:register'), data=self.register_data
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/auth/login/')
         # new user was created
         self.assertIsNotNone(User.objects.get(username='new_user'))
 
@@ -43,7 +43,7 @@ class AccountsTests(TestCase):
         self.assertFalse('_auth_user_id' in self.client.session)
         login_data = {'username': 'test', 'password': 'test'}
         response = self.client.post(reverse('auth:login'), data=login_data)
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
         # user is logged in
         self.assertEqual(self.client.session['_auth_user_id'], '1')
 
@@ -66,7 +66,7 @@ class AccountsTests(TestCase):
 
     def test_logout(self):
         response = self.client.get(reverse('auth:logout'))
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
         # no user logged in anymore
         self.assertFalse('_auth_user_id' in self.client.session)
 
