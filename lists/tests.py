@@ -60,6 +60,7 @@ class ListTests(TestCase):
         )
         self.assertTemplateUsed(response, 'lists/todolist.html')
         self.assertIsInstance(response.context['form'], TodoForm)
+        self.assertContains(response, 'test')
 
     def test_get_todolist_overview(self):
         response = self.client.get(reverse('lists:overview'))
