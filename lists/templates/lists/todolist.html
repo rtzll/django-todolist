@@ -16,7 +16,7 @@
       <form action="{% url 'lists:add_todo' todolist.id %}" method=post>
         {% csrf_token %}
         <dl>
-          <dd>{{ form.description }}
+          <dd>{{ form }}
           <dt><input type="submit" value="Submit">
         </dl>
       </form>

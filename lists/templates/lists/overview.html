@@ -33,7 +33,7 @@ $(document).ready(function() {
       <form action="{% url 'lists:add_todolist' %}" method=post>
         {% csrf_token %}
         <dl>
-          <dd>{{ form.title }}
+          <dd>{{ form }}
           <dt><input type="submit" value="Submit">
         </dl>
       </form>
