@@ -112,7 +112,7 @@ class TodoListFormTests(TestCase):
             {'title': [u'This field is required.']}
         )
 
-    def test_too_title(self):
+    def test_too_long_title(self):
         form = TodoListForm(self.too_long_title)
         self.assertFalse(form.is_valid())
         self.assertEqual(
