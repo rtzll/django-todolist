@@ -5,6 +5,10 @@
   word-wrap: break-word;
 }
 
+h2.title {
+  word-wrap: break-word;
+}
+
 th.todolist-title,
 tr td.todolist-title {
   width: 50%;
