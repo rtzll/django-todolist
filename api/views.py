@@ -6,10 +6,11 @@ from api.serializers import UserSerializer, TodoListSerializer, TodoSerializer
 from lists.models import TodoList, Todo
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(viewsets.ModelViewSet):
 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes = (permissions.IsAdminUser,)
 
 
 class TodoListViewSet(viewsets.ModelViewSet):
