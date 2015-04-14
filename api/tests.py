@@ -78,16 +78,12 @@ class TodoListTests(APITestCase):
         response = self.client.get('/api/todolists/0/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_post_when_not_logged_in(self):
+    def test_post_for_anon_users(self):
         # make sure the user is logged out
         self.client.logout()
         # try posting a todolist
         response = self.post_new_todolist(self.test_data)
-
-        self.assertEqual(
-            response.data['detail'],
-            'Authentication credentials were not provided.'
-        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_put_todolist(self):
         # add todolist
@@ -186,16 +182,12 @@ class TodoTests(APITestCase):
         response = self.client.get('/api/todo/0/')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_post_when_not_logged_in(self):
+    def test_post_for_anon_users(self):
         # make sure the user is logged out
         self.client.logout()
         # try posting a todo
         response = self.post_new_todo(self.test_data)
-
-        self.assertEqual(
-            response.data['detail'],
-            'Authentication credentials were not provided.'
-        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_put_todo(self):
         # add todo
