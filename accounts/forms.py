@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.models import User
 
 
 def widget_attrs(placeholder):
@@ -19,6 +20,16 @@ class LoginForm(forms.Form):
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
+
+    def clean(self):
+        username = self.cleaned_data.get('username')
+        password = self.cleaned_data.get('password')
+        user = User.objects.filter(username=username).first()
+
+        if not user or not user.check_password(password):
+            raise forms.ValidationError('Incorrect username and/or password.')
+
+        return self.cleaned_data
 
 
 class RegistrationForm(forms.Form):
