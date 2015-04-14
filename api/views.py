@@ -40,7 +40,9 @@ class TodoListViewSet(viewsets.ModelViewSet):
     permission_classes = (IsCreatorOrReadOnly,)
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        user = self.request.user
+        creator = user if user.is_authenticated() else None
+        serializer.save(creator=creator)
 
 
 class TodoViewSet(viewsets.ModelViewSet):
@@ -50,4 +52,6 @@ class TodoViewSet(viewsets.ModelViewSet):
     permission_classes = (IsCreatorOrReadOnly,)
 
     def perform_create(self, serializer):
-        serializer.save(creator=self.request.user)
+        user = self.request.user
+        creator = user if user.is_authenticated() else None
+        serializer.save(creator=creator)
