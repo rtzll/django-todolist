@@ -20,11 +20,17 @@ class UserTests(APITestCase):
         response = self.client.post('api:user-list', {}, format='json')
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
-    def test_get_user(self):
+    def test_get_user_if_not_admin(self):
         # get user (test user from setup)
-        get_response = self.client.get(
-            '/api/users/{0}/'.format(1)
-        )
+        get_response = self.client.get('/api/users/{0}/'.format(1))
+        self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_get_user_if_admin(self):
+        # create admin user and login as such
+        User.objects.create_superuser('admin', 'admin@example.com', 'admin')
+        self.client.login(username='admin', password='admin')
+        # get user (test user from setup)
+        get_response = self.client.get('/api/users/{0}/'.format(1))
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         # check user
         self.assertEqual(get_response.data['username'], 'test')
