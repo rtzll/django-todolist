@@ -1,7 +1,11 @@
 # Django-Todolist
-In this project I explored Django while writing a todolist web application with the most basic features of most web apps, i.e. accounts/login, API and (somewhat) interactive UI.
 
-Using the Skeleton CSS framework I tried to achieve a look that is minimal and also modern. Opposed to a lot of small projects which are proof of concepty/exploratory I made a conscious effort to also build something that looks nice. Nonetheless I'm not a designer, so I strived for good enough.
+[![License][license-image]][license-url]
+
+Django-Todolist is a todolist web application with the most basic features of most web apps, i.e. accounts/login, API and (somewhat) interactive UI.
+
+CSS [Skeleton](http://getskeleton.com/)
+JS [jQuery](https://jquery.com/)
 
 A lot of the code is directly adapted from another project I did. Where I build a web app using Flask with the exact same premise as this project. Here the Flask version: https://github.com/0xfoo/flask-todolist
 
@@ -27,5 +31,5 @@ Or start on the landing page:
 http://localhost:8000/
 
 
-### License (MIT)
-See LICENSE
+[license-url]: https://github.com/0xfoo/django-todolist/blob/master/LICENSE
+[license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
