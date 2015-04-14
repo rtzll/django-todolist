@@ -55,6 +55,13 @@ class AccountsTests(TestCase):
         error_message = 'Ensure this value has at most 64 characters'
         self.assertContains(response, error_message, status_code=200)
 
+    def test_login_with_non_existent_user(self):
+        # change username for invalid post
+        login_data = {'username': 'notauser', 'password': 'stillapassowrd'}
+        response = self.client.post(reverse('auth:login'), data=login_data)
+        error_message = 'Incorrect username and/or password.'
+        self.assertContains(response, error_message, status_code=200)
+
     def test_faulty_register(self):
         # change username for invalid post
         self.register_data['username'] = 65 * 'X'
