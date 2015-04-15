@@ -87,14 +87,10 @@ class AccountsTests(TestCase):
 
 class LoginFormTests(TestCase):
 
+    # valid test case is covered by AccountsTests (because we need a user)
     def setUp(self):
-        self.valid_form_data = {'username': 'test', 'password': 'test'}
         self.too_long_password = {'username': 'test', 'password': 65 * 'X'}
         self.too_long_username = {'username': 65 * 'X', 'password': 'test'}
-
-    def test_valid_input(self):
-        form = LoginForm(self.valid_form_data)
-        self.assertTrue(form.is_valid())
 
     def test_too_long_username(self):
         form = LoginForm(self.too_long_username)
