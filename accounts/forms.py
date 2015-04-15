@@ -22,6 +22,10 @@ class LoginForm(forms.Form):
     )
 
     def clean(self):
+        # Don't check if we already have errors.
+        if self.errors:
+            return self.cleaned_data
+
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
         user = User.objects.filter(username=username).first()
