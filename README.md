@@ -12,9 +12,9 @@ A lot of the code is directly adapted from another project I did. Where I build 
 
 
 ## Explore
-To try out the app yourself install the requirements (works with Python 2 and 3)
+Try it out by installing the requirements (works with Python 2 and 3)
 ```
-pip install django djangorestframework
+pip install -r requirements.txt
 ```
 Migrate:
 ```
@@ -25,11 +25,7 @@ And then start the server (default: http://localhost:8000)
 python manage.py runserver
 ```
 
-Now you can browse the API:
-http://localhost:8000/api/
-
-Or start on the landing page:
-http://localhost:8000/
+Now you can browse the [API](http://localhost:8000/api/) or start on the [landing page](http://localhost:8000/)
 
 
 [license-url]: https://github.com/0xfoo/django-todolist/blob/master/LICENSE
