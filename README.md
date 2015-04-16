@@ -1,6 +1,6 @@
 # Django-Todolist
 
-[![License][license-image]][license-url]
+[![License][license-image]][license-url] [![Build Status][travis-image]][travis-url]
 
 Django-Todolist is a todolist web application with the most basic features of most web apps, i.e. accounts/login, API and (somewhat) interactive UI.
 
@@ -34,3 +34,6 @@ http://localhost:8000/
 
 [license-url]: https://github.com/0xfoo/django-todolist/blob/master/LICENSE
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
+
+[travis-url]: https://travis-ci.org/0xfoo/django-todolist
+[travis-image]: https://travis-ci.org/0xfoo/django-todolist.svg?branch=master
