@@ -5,7 +5,14 @@
   word-wrap: break-word;
 }
 
-h2.title {
+/*title class behaves like h2*/
+.title {
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  font-size: 3.6rem;
+  line-height: 1.25;
+  letter-spacing: -.1rem;
   word-wrap: break-word;
 }
 
@@ -138,6 +145,9 @@ tr td.todolist-title {
 /* Larger than phone */
 
 @media (min-width: 550px) {
+  .title {
+    font-size: 4.2rem;
+  }
   .header {
     margin-top: 18rem;
   }
