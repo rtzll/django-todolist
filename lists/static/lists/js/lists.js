@@ -3,11 +3,7 @@ $(document).ready(function() {
 });
 
 function changeTodoStatus() {
-  if ($(this).is(':checked')) {
-    putNewStatus(this.getAttribute('data-todo-id'), true);
-  } else {
-    putNewStatus(this.getAttribute('data-todo-id'), false);
-  }
+  putNewStatus(this.getAttribute('data-todo-id'), $(this).is(':checked'));
 }
 
 function csrfSafeMethod(method) {
@@ -35,7 +31,6 @@ function getCookie(name) {
 }
 
 function putNewStatus(todoID, isFinished) {
-
   // setup ajax to csrf token
   var csrftoken = getCookie('csrftoken');
   $.ajaxSetup({
