@@ -8,24 +8,25 @@ Django-Todolist is a todolist web application with the most basic features of mo
 CSS | [Skeleton](http://getskeleton.com/)
 JS  | [jQuery](https://jquery.com/)
 
-A lot of the code is directly adapted from another project I did. Where I build a web app using Flask with the exact same premise as this project. Here the Flask version: https://github.com/0xfoo/flask-todolist
+I've also build a quite similar app in Flask: https://github.com/0xfoo/flask-todolist
 
 
 ## Explore
-Try it out by installing the requirements (works with Python 2 and 3)
-```
-pip install -r requirements.txt
-```
-Migrate:
-```
-python manage.py migrate
-```
-And then start the server (default: http://localhost:8000)
-```
-python manage.py runserver
-```
+Try it out by installing the requirements. (Works with Python 2 and 3.)
 
-Now you can browse the [API](http://localhost:8000/api/) or start on the [landing page](http://localhost:8000/)
+    pip install -r requirements.txt
+
+Migrate:
+
+    python manage.py migrate
+
+And then start the server (default: http://localhost:8000)
+
+    python manage.py runserver
+
+
+Now you can browse the [API](http://localhost:8000/api/)
+or start on the [landing page](http://localhost:8000/)
 
 
 [license-url]: https://github.com/0xfoo/django-todolist/blob/master/LICENSE
