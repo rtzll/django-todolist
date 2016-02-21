@@ -38,11 +38,12 @@ class LoginForm(forms.Form):
 
 class RegistrationForm(forms.Form):
 
-    email = forms.EmailField(
-        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
-    )
     username = forms.CharField(
         **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Username')))
+    )
+
+    email = forms.EmailField(
+        **form_kwargs(widget=forms.TextInput(attrs=widget_attrs('Email')))
     )
 
     password = forms.CharField(
@@ -50,6 +51,7 @@ class RegistrationForm(forms.Form):
             widget=forms.PasswordInput(attrs=widget_attrs('Password'))
         )
     )
+
     password_confirmation = forms.CharField(
         **form_kwargs(
             widget=forms.PasswordInput(
