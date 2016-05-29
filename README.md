@@ -8,7 +8,7 @@ Django-Todolist is a todolist web application with the most basic features of mo
 CSS | [Skeleton](http://getskeleton.com/)
 JS  | [jQuery](https://jquery.com/)
 
-I've also build a quite similar app in Flask: https://github.com/0xfoo/flask-todolist
+I've also build a quite similar app in Flask: https://github.com/polyfunc/flask-todolist
 
 
 ## Explore
@@ -29,8 +29,8 @@ Now you can browse the [API](http://localhost:8000/api/)
 or start on the [landing page](http://localhost:8000/)
 
 
-[license-url]: https://github.com/0xfoo/django-todolist/blob/master/LICENSE
+[license-url]: https://github.com/polyfunc/django-todolist/blob/master/LICENSE
 [license-image]: https://img.shields.io/badge/license-MIT-blue.svg?style=flat
 
-[travis-url]: https://travis-ci.org/0xfoo/django-todolist
-[travis-image]: https://travis-ci.org/0xfoo/django-todolist.svg?branch=master
+[travis-url]: https://travis-ci.org/polyfunc/django-todolist
+[travis-image]: https://travis-ci.org/polyfunc/django-todolist.svg?branch=master
