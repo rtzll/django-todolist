@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 
 from rest_framework.routers import DefaultRouter
 
@@ -9,6 +9,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'todolists', views.TodoListViewSet)
 router.register(r'todos', views.TodoViewSet)
 
+app_name = 'api'
 urlpatterns = [
-    url(r'^', include(router.urls)),
+    path('', include(router.urls)),
 ]

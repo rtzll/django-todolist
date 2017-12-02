@@ -1,12 +1,13 @@
-from django.conf.urls import url
+from django.urls import path
 
 from lists import views
 
+app_name = 'lists'
 urlpatterns = [
-    url(r'^$', views.index, name='index'),
-    url(r'^todolist/(?P<todolist_id>\d+)/$', views.todolist, name='todolist'),
-    url(r'^todolist/new/$', views.new_todolist, name='new_todolist'),
-    url(r'^todolist/add/$', views.add_todolist, name='add_todolist'),
-    url(r'^todo/add/(?P<todolist_id>\d+)/$', views.add_todo, name='add_todo'),
-    url(r'^todolists/$', views.overview, name='overview'),
+    path('', views.index, name='index'),
+    path('todolist/<int:todolist_id>/', views.todolist, name='todolist'),
+    path('todolist/new/', views.new_todolist, name='new_todolist'),
+    path('todolist/add/', views.add_todolist, name='add_todolist'),
+    path('todo/add/<int:todolist_id>/', views.add_todo, name='add_todo'),
+    path('todolists/', views.overview, name='overview'),
 ]

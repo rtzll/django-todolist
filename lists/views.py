@@ -25,7 +25,7 @@ def add_todo(request, todolist_id):
     if request.method == 'POST':
         form = TodoForm(request.POST)
         if form.is_valid():
-            user = request.user if request.user.is_authenticated() else None
+            user = request.user if request.user.is_authenticated else None
             todo = Todo(
                 description=request.POST['description'],
                 todolist_id=todolist_id,
@@ -51,7 +51,7 @@ def new_todolist(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             # create default todolist
-            user = request.user if request.user.is_authenticated() else None
+            user = request.user if request.user.is_authenticated else None
             todolist = TodoList(creator=user)
             todolist.save()
             todo = Todo(
@@ -71,7 +71,7 @@ def add_todolist(request):
     if request.method == 'POST':
         form = TodoListForm(request.POST)
         if form.is_valid():
-            user = request.user if request.user.is_authenticated() else None
+            user = request.user if request.user.is_authenticated else None
             todolist = TodoList(title=request.POST['title'], creator=user)
             todolist.save()
             return redirect('lists:todolist', todolist_id=todolist.id)

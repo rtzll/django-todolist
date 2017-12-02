@@ -1,9 +1,10 @@
-from django.conf.urls import url
+from django.urls import path
 
 from accounts import views
 
+app_name = 'auth'
 urlpatterns = [
-    url(r'^login/$', views.login_view, name='login'),
-    url(r'^logout/$', views.logout_view, name='logout'),
-    url(r'^register/$', views.register, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('register/', views.register, name='register'),
 ]

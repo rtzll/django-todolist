@@ -41,7 +41,7 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        creator = user if user.is_authenticated() else None
+        creator = user if user.is_authenticated else None
         serializer.save(creator=creator)
 
 
@@ -53,5 +53,5 @@ class TodoViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         user = self.request.user
-        creator = user if user.is_authenticated() else None
+        creator = user if user.is_authenticated else None
         serializer.save(creator=creator)

@@ -1,11 +1,10 @@
-from django.conf.urls import include, url
+from django.urls import path, include
 from django.contrib import admin
 
 urlpatterns = [
-    url(r'', include('lists.urls', namespace='lists')),
-    url(r'^auth/', include('accounts.urls', namespace='auth')),
-    url(r'^api/', include('api.urls', namespace='api')),
-    url(r'^api-auth/', include('rest_framework.urls',
-                               namespace='rest_framework')),
-    url(r'^admin/', include(admin.site.urls)),
+    path('', include('lists.urls')),
+    path('auth/', include('accounts.urls')),
+    path('api/', include('api.urls')),
+    path('api-auth/', include('rest_framework.urls')),
+    path('admin/', admin.site.urls),
 ]
