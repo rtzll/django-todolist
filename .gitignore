@@ -20,3 +20,4 @@ dist
 results
 logs
 *.logs
+venv
