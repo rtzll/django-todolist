@@ -12,25 +12,30 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'last_login', 'date_joined', 'todolists')
+        fields = ("id", "username", "last_login", "date_joined", "todolists")
 
 
 class TodoListSerializer(serializers.ModelSerializer):
 
-    creator = serializers.ReadOnlyField(source='creator.username')
+    creator = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
         model = TodoList
-        fields = ('id', 'title', 'created_at', 'creator', 'todos')
+        fields = ("id", "title", "created_at", "creator", "todos")
 
 
 class TodoSerializer(serializers.ModelSerializer):
 
-    creator = serializers.ReadOnlyField(source='creator.username')
+    creator = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
         model = Todo
         fields = (
-            'id', 'todolist', 'description', 'created_at',
-            'creator', 'is_finished', 'finished_at'
+            "id",
+            "todolist",
+            "description",
+            "created_at",
+            "creator",
+            "is_finished",
+            "finished_at",
         )

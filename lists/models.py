@@ -5,12 +5,14 @@ from django.utils import timezone
 
 
 class TodoList(models.Model):
-    title = models.CharField(max_length=128, default='untitled')
+    title = models.CharField(max_length=128, default="untitled")
     created_at = models.DateTimeField(auto_now=True)
-    creator = models.ForeignKey(User, null=True, related_name='todolists', on_delete=models.CASCADE)
+    creator = models.ForeignKey(
+        User, null=True, related_name="todolists", on_delete=models.CASCADE
+    )
 
     class Meta:
-        ordering = ('created_at',)
+        ordering = ("created_at",)
 
     def __str__(self):
         return self.title
@@ -30,11 +32,15 @@ class Todo(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     finished_at = models.DateTimeField(null=True)
     is_finished = models.BooleanField(default=False)
-    creator = models.ForeignKey(User, null=True, related_name='todos', on_delete=models.CASCADE)
-    todolist = models.ForeignKey(TodoList, related_name='todos', on_delete=models.CASCADE)
+    creator = models.ForeignKey(
+        User, null=True, related_name="todos", on_delete=models.CASCADE
+    )
+    todolist = models.ForeignKey(
+        TodoList, related_name="todos", on_delete=models.CASCADE
+    )
 
     class Meta:
-        ordering = ('created_at',)
+        ordering = ("created_at",)
 
     def __str__(self):
         return self.description
