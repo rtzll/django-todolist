@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from lists.models import TodoList, Todo
+from lists.models import Todo, TodoList
 
 
 class UserSerializer(serializers.ModelSerializer):

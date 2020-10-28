@@ -1,9 +1,9 @@
+from django import forms
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
-from django import forms
 
-from accounts.forms import RegistrationForm, LoginForm
+from accounts.forms import LoginForm, RegistrationForm
 
 
 class AccountsTests(TestCase):
