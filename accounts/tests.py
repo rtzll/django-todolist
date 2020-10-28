@@ -94,7 +94,7 @@ class LoginFormTests(TestCase):
             form.errors,
             {
                 "username": [
-                    u"Ensure this value has at most 64" + " characters (it has 65)."
+                    "Ensure this value has at most 64" + " characters (it has 65)."
                 ]
             },
         )
@@ -106,7 +106,7 @@ class LoginFormTests(TestCase):
             form.errors,
             {
                 "password": [
-                    u"Ensure this value has at most 64" + " characters (it has 65)."
+                    "Ensure this value has at most 64" + " characters (it has 65)."
                 ]
             },
         )
@@ -114,22 +114,22 @@ class LoginFormTests(TestCase):
     def test_no_username(self):
         form = LoginForm({"password": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"username": [u"This field is required."]})
+        self.assertEqual(form.errors, {"username": ["This field is required."]})
 
     def test_no_password(self):
         form = LoginForm({"username": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"password": [u"This field is required."]})
+        self.assertEqual(form.errors, {"password": ["This field is required."]})
 
     def test_empty_username(self):
         form = LoginForm({"username": "", "password": "test"})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"username": [u"This field is required."]})
+        self.assertEqual(form.errors, {"username": ["This field is required."]})
 
     def test_empty_password(self):
         form = LoginForm({"username": "test", "password": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"password": [u"This field is required."]})
+        self.assertEqual(form.errors, {"password": ["This field is required."]})
 
 
 class RegistrationFormTests(TestCase):
@@ -161,9 +161,9 @@ class RegistrationFormTests(TestCase):
     def test_invalid_email(self):
         form = RegistrationForm(self.invalid_email)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"email": [u"Enter a valid email address."]})
+        self.assertEqual(form.errors, {"email": ["Enter a valid email address."]})
 
     def test_non_matching_passwords(self):
         form = RegistrationForm(self.non_matching_passwords)
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"__all__": [u"Passwords don't match."]})
+        self.assertEqual(form.errors, {"__all__": ["Passwords don't match."]})

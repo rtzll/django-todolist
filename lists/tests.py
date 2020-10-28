@@ -83,12 +83,12 @@ class TodoListFormTests(TestCase):
     def test_no_title(self):
         form = TodoListForm({})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"title": [u"This field is required."]})
+        self.assertEqual(form.errors, {"title": ["This field is required."]})
 
     def test_empty_title(self):
         form = TodoListForm({"title": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"title": [u"This field is required."]})
+        self.assertEqual(form.errors, {"title": ["This field is required."]})
 
     def test_too_long_title(self):
         form = TodoListForm(self.too_long_title)
@@ -97,7 +97,7 @@ class TodoListFormTests(TestCase):
             form.errors,
             {
                 "title": [
-                    u"Ensure this value has at most 128 " + "characters (it has 129)."
+                    "Ensure this value has at most 128 " + "characters (it has 129)."
                 ]
             },
         )
@@ -115,12 +115,12 @@ class TodoFormTests(TestCase):
     def test_no_description(self):
         form = TodoForm({})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"description": [u"This field is required."]})
+        self.assertEqual(form.errors, {"description": ["This field is required."]})
 
     def test_empty_description(self):
         form = TodoForm({"description": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"description": [u"This field is required."]})
+        self.assertEqual(form.errors, {"description": ["This field is required."]})
 
     def test_too_title(self):
         form = TodoForm(self.too_long_description)
@@ -129,7 +129,7 @@ class TodoFormTests(TestCase):
             form.errors,
             {
                 "description": [
-                    u"Ensure this value has at most 128 " + "characters (it has 129)."
+                    "Ensure this value has at most 128 " + "characters (it has 129)."
                 ]
             },
         )

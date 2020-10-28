@@ -21,7 +21,7 @@ class UserTests(APITestCase):
 
     def test_get_user_if_not_admin(self):
         # get user (test user from setup)
-        get_response = self.client.get("/api/users/{0}/".format(1))
+        get_response = self.client.get("/api/users/{}/".format(1))
         self.assertEqual(get_response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_get_user_if_admin(self):
@@ -29,7 +29,7 @@ class UserTests(APITestCase):
         User.objects.create_superuser("admin", "admin@example.com", "admin")
         self.client.login(username="admin", password="admin")
         # get user (test user from setup)
-        get_response = self.client.get("/api/users/{0}/".format(1))
+        get_response = self.client.get("/api/users/{}/".format(1))
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         # check user
         self.assertEqual(get_response.data["username"], "test")
@@ -61,7 +61,7 @@ class TodoListTests(APITestCase):
         # get todolist
         todolist_id = post_response.data["id"]
         self.assertEqual(todolist_id, 1)
-        get_response = self.client.get("/api/todolists/{0}/".format(todolist_id))
+        get_response = self.client.get(f"/api/todolists/{todolist_id}/")
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         # check todolist
         self.assertEqual(get_response.data, post_response.data)
@@ -96,10 +96,10 @@ class TodoListTests(APITestCase):
         put_data = post_response.data
         put_data["title"] = "changed title"
         put_response = self.client.put(
-            "/api/todolists/{0}/".format(todolist_id), put_data, format="json"
+            f"/api/todolists/{todolist_id}/", put_data, format="json"
         )
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
-        get_response = self.client.get("/api/todolists/{0}/".format(todolist_id))
+        get_response = self.client.get(f"/api/todolists/{todolist_id}/")
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data["title"], "changed title")
 
@@ -109,10 +109,10 @@ class TodoListTests(APITestCase):
         self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         # delete todolist
         todolist_id = post_response.data["id"]
-        delete_response = self.client.delete("/api/todolists/{0}/".format(todolist_id))
+        delete_response = self.client.delete(f"/api/todolists/{todolist_id}/")
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
         # get todolist and expect 404
-        get_response = self.client.get("/api/todolists/{0}/".format(todolist_id))
+        get_response = self.client.get(f"/api/todolists/{todolist_id}/")
         self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
 
 
@@ -148,7 +148,7 @@ class TodoTests(APITestCase):
         # get todo
         todo_id = post_response.data["id"]
         self.assertEqual(todo_id, 1)
-        get_response = self.client.get("/api/todos/{0}/".format(todo_id))
+        get_response = self.client.get(f"/api/todos/{todo_id}/")
         self.assertEqual(get_response.status_code, status.HTTP_200_OK)
         # check todo
         self.assertEqual(get_response.data, post_response.data)
@@ -183,10 +183,10 @@ class TodoTests(APITestCase):
         put_data = post_response.data
         put_data["description"] = "changed description"
         put_response = self.client.put(
-            "/api/todos/{0}/".format(todo_id), put_data, format="json"
+            f"/api/todos/{todo_id}/", put_data, format="json"
         )
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
-        get_response = self.client.get("/api/todos/{0}/".format(todo_id))
+        get_response = self.client.get(f"/api/todos/{todo_id}/")
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data["description"], "changed description")
 
@@ -199,10 +199,10 @@ class TodoTests(APITestCase):
         put_data = post_response.data
         put_data["is_finished"] = True
         put_response = self.client.put(
-            "/api/todos/{0}/".format(todo_id), put_data, format="json"
+            f"/api/todos/{todo_id}/", put_data, format="json"
         )
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
-        get_response = self.client.get("/api/todos/{0}/".format(todo_id))
+        get_response = self.client.get(f"/api/todos/{todo_id}/")
         self.assertEqual(put_response.status_code, status.HTTP_200_OK)
         self.assertEqual(get_response.data["is_finished"], True)
 
@@ -212,8 +212,8 @@ class TodoTests(APITestCase):
         self.assertEqual(post_response.status_code, status.HTTP_201_CREATED)
         # delete todolist
         todo_id = post_response.data["id"]
-        delete_response = self.client.delete("/api/todos/{0}/".format(todo_id))
+        delete_response = self.client.delete(f"/api/todos/{todo_id}/")
         self.assertEqual(delete_response.status_code, status.HTTP_204_NO_CONTENT)
         # get todolist and expect 404
-        get_response = self.client.get("/api/todos/{0}/".format(todo_id))
+        get_response = self.client.get(f"/api/todos/{todo_id}/")
         self.assertEqual(get_response.status_code, status.HTTP_404_NOT_FOUND)
