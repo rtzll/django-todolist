@@ -79,4 +79,5 @@ def add_todolist(request):
         else:
             return render(request, "lists/overview.html", {"form": form})
 
+
     return redirect(red_index)
