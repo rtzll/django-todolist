@@ -5,7 +5,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from lists.forms import TodoForm, TodoListForm
 from lists.models import Todo, TodoList
 
-
+CONST_TODOLIST = "lists:todolist"
+CONST_INDEX = "lists:index"
 def index(request):
     return render(request, "lists/index.html", {"form": TodoForm()})
 
@@ -31,11 +32,11 @@ def add_todo(request, todolist_id):
                 creator=user,
             )
             todo.save()
-            return redirect("lists:todolist", todolist_id=todolist_id)
+            return redirect(CONST_TODOLIST, todolist_id=todolist_id)
         else:
             return render(request, "lists/todolist.html", {"form": form})
 
-    return redirect("lists:index")
+    return redirect(CONST_INDEX)
 
 
 @login_required
@@ -59,11 +60,11 @@ def new_todolist(request):
                 creator=user,
             )
             todo.save()
-            return redirect("lists:todolist", todolist_id=todolist.id)
+            return redirect(CONST_TODOLIST, todolist_id=todolist.id)
         else:
             return render(request, "lists/index.html", {"form": form})
 
-    return redirect("lists:index")
+    return redirect(CONST_INDEX)
 
 
 def add_todolist(request):
@@ -73,8 +74,8 @@ def add_todolist(request):
             user = request.user if request.user.is_authenticated else None
             todolist = TodoList(title=request.POST["title"], creator=user)
             todolist.save()
-            return redirect("lists:todolist", todolist_id=todolist.id)
+            return redirect(CONST_TODOLIST, todolist_id=todolist.id)
         else:
             return render(request, "lists/overview.html", {"form": form})
 
-    return redirect("lists:index")
+    return redirect(CONST_INDEX)

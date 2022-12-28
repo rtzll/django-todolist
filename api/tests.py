@@ -5,10 +5,11 @@ from rest_framework.test import APITestCase
 
 from lists.models import TodoList
 
+MAIL_SAMPLE = "test@example.com"
 
 class UserTests(APITestCase):
     def setUp(self):
-        User.objects.create_user("test", "test@example.com", "test")
+        User.objects.create_user("test", MAIL_SAMPLE , "test")
         self.client.login(username="test", password="test")
 
     def tearDown(self):
@@ -37,7 +38,7 @@ class UserTests(APITestCase):
 
 class TodoListTests(APITestCase):
     def setUp(self):
-        User.objects.create_user("test", "test@example.com", "test")
+        User.objects.create_user("test", MAIL_SAMPLE , "test")
         self.client.login(username="test", password="test")
         self.test_data = {"title": "some other title", "todos": []}
 
@@ -118,7 +119,7 @@ class TodoListTests(APITestCase):
 
 class TodoTests(APITestCase):
     def setUp(self):
-        self.test_user = User.objects.create_user("test", "test@example.com", "test")
+        self.test_user = User.objects.create_user("test", MAIL_SAMPLE, "test")
         self.client.login(username="test", password="test")
         self.test_todolist = TodoList(title="some title", creator=self.test_user)
         self.test_todolist.save()

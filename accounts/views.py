@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from accounts.forms import LoginForm, RegistrationForm
 from lists.forms import TodoForm
 
-
+CONST_INDEX = "lists:index"
 def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
@@ -13,16 +13,15 @@ def login_view(request):
             user = authenticate(
                 username=request.POST["username"], password=request.POST["password"]
             )
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    return redirect("lists:index")
+            if user is not None and user.is_active:
+                login(request, user)
+                return redirect(CONST_INDEX)
         else:
             return render(request, "accounts/login.html", {"form": form})
     else:
         return render(request, "accounts/login.html", {"form": LoginForm()})
 
-    return redirect("lists:index")
+    return redirect(CONST_INDEX)
 
 
 def register(request):
@@ -43,4 +42,4 @@ def register(request):
 
 def logout_view(request):
     logout(request)
-    return redirect("lists:index")
+    return redirect(CONST_INDEX)
