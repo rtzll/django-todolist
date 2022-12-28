@@ -21,3 +21,5 @@ results
 logs
 *.logs
 venv
+file.conf
+report-task.txt
