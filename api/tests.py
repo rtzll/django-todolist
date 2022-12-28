@@ -26,6 +26,8 @@ class UserTests(APITestCase):
 
     def test_get_user_if_admin(self):
         # create admin user and login as such
+        #User.objects.create_superuser("admin", "admin@example.com", "admin")
+        #self.client.login(username="admin", password="admin")
         User.objects.create_superuser("admin", "admin@example.com", "admin")
         self.client.login(username="admin", password="admin")
         # get user (test user from setup)
