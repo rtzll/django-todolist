@@ -7,6 +7,8 @@ from django.urls import reverse
 from lists.forms import TodoForm, TodoListForm
 from lists.models import Todo, TodoList
 
+red_overview = "lists:overview"
+alert = "This field is required."
 
 class ListTests(TestCase):
     def setUp(self):
@@ -52,17 +54,17 @@ class ListTests(TestCase):
         self.assertContains(response, "test")
 
     def test_get_todolist_overview(self):
-        response = self.client.get(reverse("lists:overview"))
+        response = self.client.get(reverse(red_overview))
         self.assertTemplateUsed(response, "lists/overview.html")
         self.assertIsInstance(response.context["form"], TodoListForm)
 
     def test_get_todolist_overview_redirect_when_not_logged_in(self):
         self.client.logout()
-        response = self.client.get(reverse("lists:overview"))
+        response = self.client.get(reverse(red_overview))
         self.assertRedirects(response, "/auth/login/?next=/todolists/")
 
     def test_add_todolist_to_todolist_overview(self):
-        response = self.client.post(reverse("lists:overview"), {"title": "some title"})
+        response = self.client.post(reverse(red_overview), {"title": "some title"})
         self.assertRedirects(
             response,
             "/todolist/add/",
@@ -83,12 +85,12 @@ class TodoListFormTests(TestCase):
     def test_no_title(self):
         form = TodoListForm({})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"title": ["This field is required."]})
+        self.assertEqual(form.errors, {"title": [alert]})
 
     def test_empty_title(self):
         form = TodoListForm({"title": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"title": ["This field is required."]})
+        self.assertEqual(form.errors, {"title": [alert]})
 
     def test_too_long_title(self):
         form = TodoListForm(self.too_long_title)
@@ -115,12 +117,12 @@ class TodoFormTests(TestCase):
     def test_no_description(self):
         form = TodoForm({})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"description": ["This field is required."]})
+        self.assertEqual(form.errors, {"description": [alert]})
 
     def test_empty_description(self):
         form = TodoForm({"description": ""})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors, {"description": ["This field is required."]})
+        self.assertEqual(form.errors, {"description": [alert]})
 
     def test_too_title(self):
         form = TodoForm(self.too_long_description)
