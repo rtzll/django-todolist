@@ -10,6 +10,7 @@ Lista de tareas abarcadas por la modificacion del proyecto inicial:
 - Aplicacion de herramientas de construcción Automática (PyBuilder).
 - Análisis Estático (SonarQube).
 - Pruebas Unitarias ().
+> Test 1
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/test1.png)
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/test2.png)
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/test3.png)
