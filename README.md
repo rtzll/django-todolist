@@ -12,7 +12,7 @@ Lista de tareas abarcadas por la modificacion del proyecto inicial:
 - Pruebas Unitarias ().
 - Pruebas Funcionales (Selenium Webdriver).
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/pruebas_funcionales.png)
-<img src="https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/pruebas_funcionales.png" width="128"/>
+<img src="https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/pruebas_funcionales.png" scale=0.5/>
 - Gestion de tareas e Issues (Trello).
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/trello.png)
 
