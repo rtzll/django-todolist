@@ -6,6 +6,7 @@
 Django-Todolist es una aplicación web de listas de tareas con las funciones más básicas de la mayoría de las aplicaciones web, es decir, cuentas/inicio de sesión, API y una interfaz de usuario algo interactiva.
 
 Lista de tareas abarcadas por la modificacion del proyecto inicial:
+- Pipeline
 - Creacion de repositorio y branches correspondientes (Github): repositorio: [django_todolist](https://github.com/SamuelChambiYtusaca/django-todolist)
 - Aplicacion de herramientas de construcción Automática (PyBuilder).
 > Construcción automática: se separó la construcción de la ejecución de pruebas unitarias, las pruebas unitarias se realizan durante la ejecución del pipeline
