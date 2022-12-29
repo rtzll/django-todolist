@@ -7,6 +7,53 @@ Django-Todolist es una aplicación web de listas de tareas con las funciones má
 
 Lista de tareas abarcadas por la modificacion del proyecto inicial:
 - Pipeline
+> Ejecución de pipeline CI/CD: preparación, construcción automática y pruebas unitarias
+
+![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/pipeline.png)
+![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/eje_pipeline.png)
+![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/_aux.png)
+      
+      pipeline {
+          agent any
+          stages{
+              stage('Preparation') { 
+                  steps{
+                      script{
+                          cleanWs()
+                          sh '''#!/bin/bash
+                             git clone https://github.com/SamuelChambiYtusaca/django-todolist.git
+                             cd ./django-todolist 
+                             pip install virtualenv
+                             virtualenv venv
+                             source venv/bin/activate
+                             pip install pybuilder
+                             pip install -r requirements.txt'''
+                      }   
+                  }
+              }
+              stage('Build') {
+                  // Run the maven build
+                  steps {
+                      script{
+                          sh '''#!/bin/bash
+                          cd ./django-todolist
+                          source venv/bin/activate
+                          python3 setup.py
+                          python3 manage.py migrate'''
+                      }
+                  }
+              }
+              stage('test') {
+                  steps{
+                      script{
+                          sh '''#!/bin/bash
+                          cd ./django-todolist
+                          python3 manage.py test src.unittest'''        
+                      }
+                  }
+              }
+          }
+      }
 - Creacion de repositorio y branches correspondientes (Github): repositorio: [django_todolist](https://github.com/SamuelChambiYtusaca/django-todolist)
 - Aplicacion de herramientas de construcción Automática (PyBuilder).
 > Construcción automática: se separó la construcción de la ejecución de pruebas unitarias, las pruebas unitarias se realizan durante la ejecución del pipeline
