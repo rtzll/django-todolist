@@ -11,6 +11,7 @@ Lista de tareas abarcadas por la modificacion del proyecto inicial:
 - Análisis Estático (SonarQube).
 - Pruebas Unitarias ().
 - Pruebas Funcionales (Selenium Webdriver).
+![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/pruebas_funcionales.png)
 - Gestion de tareas e Issues (Trello).
 ![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/trello.png)
 
