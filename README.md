@@ -12,7 +12,7 @@ Lista de tareas abarcadas por la modificacion del proyecto inicial:
 - Pruebas Unitarias ().
 - Pruebas Funcionales (Selenium Webdriver).
 - Gestion de tareas e Issues (Trello).
-
+![Error al cargar la imagen](https://github.com/SamuelChambiYtusaca/django-todolist/blob/willa/imagenes/trello.png)
 
 ## Creacion del repositorio
 
