@@ -21,5 +21,3 @@ results
 logs
 *.logs
 venv
-
-**/imagenes
