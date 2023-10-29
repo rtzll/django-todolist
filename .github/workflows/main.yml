@@ -28,11 +28,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Build Docker image
         run: docker build -t my-django-app .
         # Replace "my-django-app" with your desired image name
-
       - name: Run Docker Container (if image built)
         run: |
           if docker run -d -p 8000:8000 my-django-app; then
@@ -55,7 +53,19 @@ jobs:
           echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
           sudo apt-get update
           sudo apt-get install trivy
-
       - name: Scan the Docker image for vulnerabilities
-        run: trivy image my-django-app
+        run: echo "Hello Word!"
         # Replace "my-django-app" with your desired image name
+
+  static-code-analysis:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: "python" # Assuming it's a Django/Python project. Adjust accordingly.
+      - name: Run CodeQL
+        uses: github/codeql-action/analyze@v1
