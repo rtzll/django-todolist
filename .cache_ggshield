@@ -1,1 +1,1 @@
-{"last_found_secrets": [{"match": "0a05329e4a0e81fce3d764b7e76a02d1b704dd5b7b0d623e36d34eabdf60ef11", "name": "Django Secret Key - todolist/settings.py"}]}
+{"last_found_secrets": [{"name": "GitGuardian Internal Monitoring Key - manage.py", "match": "882560122af86407cecc4507f1486a81f685ed12d1ce3cf651adb952563f1155"}]}
