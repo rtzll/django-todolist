@@ -1,10 +1,10 @@
-name: GitGuardian scan
+name: Combined Workflow
 
 on: [push, pull_request]
 
 jobs:
   scanning:
-    name: GitGuardian scan
+    name: GitGuardian Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -12,9 +12,23 @@ jobs:
         with:
           fetch-depth: 0 # fetch all history so multiple commits can be scanned
       - name: GitGuardian scan
+        id: gitguardian
         uses: GitGuardian/ggshield-action@v1.20.0
         env:
           GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: scanning
+    if: success() # Only execute if the "GitGuardian Scan" job was successful
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t my-django-app .
+        # Replace "my-django-app" with your desired image name
