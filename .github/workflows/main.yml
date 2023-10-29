@@ -71,7 +71,7 @@ jobs:
         - name: Run Django migrations
           run: python manage.py migrate
           env:
-            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY1 }}
+            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
         - name: Run Django tests
           run: python manage.py test
           env:
