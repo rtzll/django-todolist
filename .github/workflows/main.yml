@@ -24,7 +24,7 @@ jobs:
     name: Docker Build
     runs-on: ubuntu-latest
     needs: scanning
-    if: success() # Only execute if the "GitGuardian Scan" job was successful
+    if: steps.scanning.outputs.gitguardian == 'success' # Only execute if the "GitGuardian Scan" job is successful
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -32,3 +32,12 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-django-app .
         # Replace "my-django-app" with your desired image name
+
+  fail-on-gitguardian:
+    name: Fail on GitGuardian Failure
+    runs-on: ubuntu-latest
+    needs: scanning
+    if: steps.scanning.outputs.gitguardian != 'success' # Only execute if the "GitGuardian Scan" job fails
+    steps:
+      - name: Set workflow status to failure
+        run: echo "::error::GitGuardian Scan detected a secret." && exit 1
