@@ -8,9 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+        uses: actions/checkout@v2
       - name: GitGuardian scan
         id: gitguardian
         uses: GitGuardian/ggshield-action@v1.20.0
@@ -30,7 +28,7 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v2
         with:
-          languages: "python"
+          languages: "python,javascript"
       - name: Run CodeQL
         uses: github/codeql-action/analyze@v2
 
@@ -61,7 +59,7 @@ jobs:
       security-events: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Build an image from Dockerfile
         run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
       - name: Run Trivy vulnerability scanner
