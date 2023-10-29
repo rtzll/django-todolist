@@ -76,21 +76,3 @@ jobs:
           languages: "python"
       - name: Run CodeQL
         uses: github/codeql-action/analyze@v2
-
-  release:
-    name: Release Application
-    runs-on: ubuntu-latest
-    needs: [scan-image, static-code-analysis]
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Push Docker Image to DockerHub
-        run: echo "test"
-
-  deploy:
-    name: Deploy Application
-    runs-on: ubuntu-latest
-    needs: release
-    steps:
-      - name: Deploy to pre-production
-        run: echo "Deploying application..."
