@@ -1,33 +1,17 @@
-name: Combined Workflow
+name: CI/CD Pipeline
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  scanning:
-    name: GitGuardian Scan
+  task1:
+    name: Dockerize the Application
     runs-on: ubuntu-latest
-    outputs:
-      scanning-success: ${{ steps.scanning.outputs.success }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0 # fetch all history so multiple commits can be scanned
-
-      - name: GitGuardian scan
-        id: scanning
-        uses: GitGuardian/ggshield-action@v1.20.0
-        env:
-          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
-          GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
-          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-
-  build:
-    name: Docker Build
-    runs-on: ubuntu-latest
-    needs: scanning
-    if: ${{ needs.scanning.outputs.scanning-success == 'true' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -36,28 +20,58 @@ jobs:
         run: docker build -t my-django-app .
         # Replace "my-django-app" with your desired image name
 
-      - name: Run Docker Container (if image built)
-        run: |
-          if docker run -d -p 8000:8000 my-django-app; then
-            echo "Docker container started successfully."
-          else
-            echo "Failed to start Docker container."
-            exit 1
-          fi
-        # Replace "my-django-app" with your desired image name
-
-  vulnerability_scan:
-    name: Check for Image Vulnerabilities
+  task2:
+    name: Test and Build Docker Container
     runs-on: ubuntu-latest
-    needs: build
-    if: ${{ needs.build.result == 'success' }}
+    needs: task1
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Check for Image Vulnerabilities
+      - name: Run Unit Tests
         run: |
-          # Run your vulnerability scanning tool on the built Docker image
-          # Example: trivy my-django-app:latest
-          echo "Checking for image vulnerabilities...1231"
-          # Ensure you have the vulnerability scanning tool installed
+          # Add commands to run your unit tests here
+          echo "Running unit tests..."
+
+      - name: Build Docker image
+        run: docker build -t my-django-app .
+        # Replace "my-django-app" with your desired image name
+
+  task3:
+    name: Provision AWS Infrastructure
+    runs-on: ubuntu-latest
+    needs: task2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Provision AWS Infrastructure
+        run: |
+          # Add commands to provision AWS infrastructure here
+          echo "Provisioning AWS infrastructure..."
+
+  task4:
+    name: Deploy Dockerized Application
+    runs-on: ubuntu-latest
+    needs: task3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy Dockerized Application
+        run: |
+          # Add commands to deploy the Dockerized application here
+          echo "Deploying Dockerized application..."
+
+  static_analysis:
+    name: Static Analysis
+    runs-on: ubuntu-latest
+    needs: task2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Static Code Analysis
+        run: |
+          # Add commands for static code analysis here
+          echo "Running static code analysis..."
