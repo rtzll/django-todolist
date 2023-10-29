@@ -161,7 +161,6 @@ jobs:
   Infrastructure:
     name: Creating Infrastucture 
     runs-on: "ubuntu-latest"
-    needs: scan-image
     steps:
       - name: Set up Node.js v16
         uses: actions/setup-node@v2
@@ -189,7 +188,6 @@ jobs:
   Deploy-App-To-AWS:
     name: Deploying App To AWS
     runs-on: "ubuntu-latest"
-    needs: scan-image
     steps:
       - name: Set up Node.js v16
         uses: actions/setup-node@v2
