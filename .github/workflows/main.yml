@@ -105,6 +105,9 @@ jobs:
     name: Scan Docker Image
     runs-on: "ubuntu-20.04"
     needs: build
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Set up Node.js v16
         uses: actions/setup-node@v2
@@ -133,9 +136,7 @@ on:
     workflows: ["Pre-Production Workflow"]
     types:
       - completed
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+
+# Fail the entire workflow if any job fails
+strategy:
+  fail-fast: true
