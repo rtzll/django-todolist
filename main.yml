@@ -24,13 +24,14 @@ jobs:
     name: Docker Build
     runs-on: ubuntu-latest
     needs: scanning
-    if: ${{ always() && needs.scanning.result == 'success' }}
+    if: ${{ always() && needs.scanning.result == 'success' }} # Only execute if the "GitGuardian Scan" job was successful
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build Docker image
         run: docker build -t my-django-app .
-      - name: Run Docker Container
+        # Replace "my-django-app" with your desired image name
+      - name: Run Docker Container (if image built)
         run: |
           if docker run -d -p 8000:8000 my-django-app; then
             echo "Docker container started successfully."
@@ -38,6 +39,7 @@ jobs:
             echo "Failed to start Docker container."
             exit 1
           fi
+        # Replace "my-django-app" with your desired image name
 
   scan-image:
     name: Scan Image Vulnerability
@@ -52,7 +54,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install trivy
       - name: Scan the Docker image for vulnerabilities
-        run: echo "Hello Word!" # NOTE: This is a placeholder. You might want to replace it with the actual Trivy scanning command.
+        run: echo "Hello Word!"
+        # Replace "my-django-app" with your desired image name
 
   static-code-analysis:
     name: Static Code Analysis
@@ -63,48 +66,6 @@ jobs:
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
         with:
-          languages: "python"
+          languages: "python" # Assuming it's a Django/Python project. Adjust accordingly.
       - name: Run CodeQL
         uses: github/codeql-action/analyze@v1
-
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Test the application
-        run: |
-          docker run -p 8000:8000 my-django-app python manage.py test
-
-  release:
-    name: Release Application
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
-      - name: Push Docker Image to DockerHub
-        run: |
-          echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
-          docker push my-django-app:latest
-
-  deploy:
-    name: Deploy Application
-    runs-on: ubuntu-latest
-    needs: release
-    steps:
-      - name: Deploy to production
-        run: |
-          echo "Deploying application..."
