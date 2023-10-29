@@ -7,6 +7,10 @@ jobs:
     name: GitGuardian Scan
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Node.js v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Checkout
         uses: actions/checkout@v2
       - name: GitGuardian scan
@@ -23,6 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: scanning
     steps:
+      - name: Set up Node.js v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Initialize CodeQL
@@ -37,6 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     needs: [scanning, static-code-analysis]
     steps:
+      - name: Set up Node.js v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build Docker image
@@ -58,6 +70,10 @@ jobs:
       contents: read
       security-events: write
     steps:
+      - name: Set up Node.js v16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build an image from Dockerfile
