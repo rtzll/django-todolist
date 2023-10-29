@@ -42,3 +42,20 @@ jobs:
             exit 1
           fi
         # Replace "my-django-app" with your desired image name
+
+  scan-image:
+    name: Scan Image Vulnerability
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install Trivy
+        run: |
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
+
+      - name: Scan the Docker image for vulnerabilities
+        run: trivy image my-django-app
+        # Replace "my-django-app" with your desired image name
