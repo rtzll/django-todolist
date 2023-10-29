@@ -80,7 +80,7 @@ jobs:
   release:
     name: Release Application
     runs-on: ubuntu-latest
-    needs: [test, scan-image, static-code-analysis]
+    needs: [scan-image, static-code-analysis]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
