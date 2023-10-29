@@ -105,9 +105,6 @@ jobs:
     name: Scan Docker Image
     runs-on: "ubuntu-20.04"
     needs: build
-    permissions:
-      contents: read
-      security-events: write
     steps:
       - name: Set up Node.js v16
         uses: actions/setup-node@v2
