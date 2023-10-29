@@ -21,7 +21,7 @@ jobs:
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
 
   build:
-    name: Docker Build
+    name: Docker Build and Run
     runs-on: ubuntu-latest
     needs: scanning
     if: ${{ always() && needs.scanning.result == 'success' }} # Only execute if the "GitGuardian Scan" job was successful
@@ -33,7 +33,7 @@ jobs:
         run: docker build -t my-django-app .
         # Replace "my-django-app" with your desired image name
 
-      - name: Run Docker Container (if image built)
+      - name: Start Docker Container (if image built)
         run: |
           if docker run -d -p 8000:8000 my-django-app; then
             echo "Docker container started successfully."
@@ -42,3 +42,15 @@ jobs:
             exit 1
           fi
         # Replace "my-django-app" with your desired image name
+
+      - name: Wait for Django to start
+        run: sleep 10s  # Adjust the duration as needed to allow the Django app to start
+
+      - name: Run Tests
+        run: |
+          # Example: Run tests that access the Django app using host.docker.internal
+          curl http://host.docker.internal:8000
+        # Replace with your actual test commands
+
+      - name: Stop Docker Container
+        run: docker stop $(docker ps -q)
