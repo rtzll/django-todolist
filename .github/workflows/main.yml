@@ -3,14 +3,15 @@ name: Combined Workflow
 on: [push, pull_request]
 
 jobs:
-  build:
-    name: GitGuardian Scan, Docker Build, and Image Analysis
+  scanning:
+    name: GitGuardian Scan
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: GitGuardian Scan
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+      - name: GitGuardian scan
         id: gitguardian
         uses: GitGuardian/ggshield-action@v1.20.0
         env:
@@ -18,34 +19,34 @@ jobs:
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
-      
-      - name: Display GitGuardian Scan Result
-        run: |
-          if [ ${{ steps.gitguardian.outputs.success }} == 'true' ]; then
-            echo "GitGuardian scan succeeded."
-          else
-            echo "GitGuardian scan failed."
-            exit 1
-          fi
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: scanning
+    if: ${{ always() && needs.scanning.result == 'success' }} # Only execute if the "GitGuardian Scan" job was successful
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
       - name: Build Docker image
-        id: docker_build
         run: docker build -t my-django-app .
         # Replace "my-django-app" with your desired image name
 
-      - name: Display Docker Build Result
-        run: |
-          if [ ${{ steps.docker_build.exitcode }} -eq 0 ]; then
-            echo "Docker image build succeeded."
-          else
-            echo "Docker image build failed."
-            exit 1
-          fi
-
-      - name: Image Analysis for Vulnerabilities
+      - name: Check for Image Vulnerabilities
         if: success() # Only run if the Docker image build was successful
         run: |
-          # Run your vulnerability analysis tool on the built Docker image
+          # Run your vulnerability scanning tool on the built Docker image
           # Example: trivy my-django-app:latest
-          echo "Running image vulnerability analysis..."
-          # Ensure you have the vulnerability analysis tool installed
+          echo "Checking for image vulnerabilities..."
+          # Ensure you have the vulnerability scanning tool installed
+
+      - name: Run Docker Container (if image built)
+        run: |
+          if docker run -d -p 8000:8000 my-django-app; then
+            echo "Docker container started successfully."
+          else
+            echo "Failed to start Docker container."
+            exit 1
+          fi
+        # Replace "my-django-app" with your desired image name
