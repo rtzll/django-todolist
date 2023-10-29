@@ -40,38 +40,29 @@ jobs:
           fi
 
   scan-image:
+    name: Scan Docker Image
+    runs-on: "ubuntu-20.04"
+    needs: build
     permissions:
       contents: read
-
-  jobs:
-    build:
-      permissions:
-        contents: read # for actions/checkout to fetch code
-        security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-        actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-      name: Build
-      runs-on: "ubuntu-20.04"
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v3
-
-        - name: Build an image from Dockerfile
-          run: |
-            docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
-
-        - name: Run Trivy vulnerability scanner
-          uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
-          with:
-            image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-            format: 'template'
-            template: '@/contrib/sarif.tpl'
-            output: 'trivy-results.sarif'
-            severity: 'CRITICAL,HIGH'
-
-        - name: Upload Trivy scan results to GitHub Security tab
-          uses: github/codeql-action/upload-sarif@v2
-          with:
-            sarif_file: 'trivy-results.sarif'
+      security-events: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Build an image from Dockerfile
+        run: docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+        with:
+          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
 
   static-code-analysis:
     name: Static Code Analysis
@@ -94,8 +85,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Test the application
-        run: |
-         echo "test"
+        run: echo "test"
 
   release:
     name: Release Application
@@ -104,10 +94,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Push Docker Image to DockerHub
-        run: |
-          echo "test"
+        run: echo "test"
 
   deploy:
     name: Deploy Application
@@ -115,5 +103,4 @@ jobs:
     needs: release
     steps:
       - name: Deploy to pre-production
-        run: |
-          echo "Deploying application..."
+        run: echo "Deploying application..."
