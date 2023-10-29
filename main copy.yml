@@ -1,0 +1,100 @@
+name: Pre-Production Workflow
+
+on: [push, pull_request]
+
+jobs:
+  scanning:
+    name: GitGuardian Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+      - name: GitGuardian scan
+        id: gitguardian
+        uses: GitGuardian/ggshield-action@v1.20.0
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+          GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: scanning
+    if: ${{ always() && needs.scanning.result == 'success' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build -t my-django-app .
+      - name: Run Docker Container
+        run: |
+          if docker run -d -p 8000:8000 my-django-app; then
+            echo "Docker container started successfully."
+          else
+            echo "Failed to start Docker container."
+            exit 1
+          fi
+
+  scan-image:
+    name: Scan Image Vulnerability
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install Trivy
+        run: |
+          sudo apt-get install wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install trivy
+      - name: Scan the Docker image for vulnerabilities
+        run: echo "Hello Word!" # NOTE: This is a placeholder. You might want to replace it with the actual Trivy scanning command.
+
+  static-code-analysis:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: "python"
+      - name: Run CodeQL
+        uses: github/codeql-action/analyze@v1
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test the application
+        run: |
+         echo "test"
+
+  release:
+    name: Release Application
+    runs-on: ubuntu-latest
+    needs: [test, scan-image, static-code-analysis]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Push Docker Image to DockerHub
+        run: |
+          echo "test"
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Deploy to pre-production
+        run: |
+          echo "Deploying application..."
