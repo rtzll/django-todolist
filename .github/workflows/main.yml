@@ -150,8 +150,8 @@ jobs:
           DOCKER_USERNAME: ${{ github.repository_owner }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_ACCESS_TOKEN }}
 
-      - name: Push Docker Image to Docker Hub
+      - name: Push Docker Image with Custom Tag
         run: |
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-          docker tag ghcr.io/my-organization/my-app:${{ github.sha }} tbristol01/django-todolist:latest
-          docker push tbristol01/django-todolist:latest
+          docker tag ghcr.io/my-organization/my-app:${{ github.sha }} tbristol01/django-todolist:tagname
+          docker push tbristol01/django-todolist:tagname
