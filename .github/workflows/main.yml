@@ -159,7 +159,7 @@ jobs:
           Infrastructure as Code (IaC)
 
   Infrastructure:
-    name: Publish Docker Image
+    name: Creating Infrastucture 
     runs-on: "ubuntu-latest"
     needs: scan-image
     steps:
@@ -185,9 +185,9 @@ jobs:
           # docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           # docker tag ghcr.io/my-organization/my-app:${{ github.sha }} tbristol01/django-todolist:tagname
           # docker push tbristol01/django-todolist:tagname
-          
+
   Deploy-App-To-AWS:
-    name: Publish Docker Image
+    name: Deploying App To AWS
     runs-on: "ubuntu-latest"
     needs: scan-image
     steps:
