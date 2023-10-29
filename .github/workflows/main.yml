@@ -42,7 +42,6 @@ jobs:
   scan-image:
     name: Scan Docker Image
     runs-on: "ubuntu-20.04"
-    needs: build
     permissions:
       contents: read
       security-events: write
