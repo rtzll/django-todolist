@@ -1,41 +1,119 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: trivy
+name: Pre-Production Workflow
 
 on: [push, pull_request]
 
-permissions:
-  contents: read
-
 jobs:
+  scanning:
+    name: GitGuardian Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # fetch all history so multiple commits can be scanned
+      - name: GitGuardian scan
+        id: gitguardian
+        uses: GitGuardian/ggshield-action@v1.20.0
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+          GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
+          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+
   build:
-    permissions:
-      contents: read # for actions/checkout to fetch code
-      security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
-      actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Build
-    runs-on: "ubuntu-20.04"
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: scanning
+    if: ${{ always() && needs.scanning.result == 'success' }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Build an image from Dockerfile
+        uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build -t my-django-app .
+      - name: Run Docker Container
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          if docker run -d -p 8000:8000 my-django-app; then
+            echo "Docker container started successfully."
+          else
+            echo "Failed to start Docker container."
+            exit 1
+          fi
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
-        with:
-          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH'
+  scan-image:
+    permissions:
+      contents: read
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
+  jobs:
+    build:
+      permissions:
+        contents: read # for actions/checkout to fetch code
+        security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+        actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
+      name: Build
+      runs-on: "ubuntu-20.04"
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v3
+
+        - name: Build an image from Dockerfile
+          run: |
+            docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+
+        - name: Run Trivy vulnerability scanner
+          uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
+          with:
+            image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+            format: 'template'
+            template: '@/contrib/sarif.tpl'
+            output: 'trivy-results.sarif'
+            severity: 'CRITICAL,HIGH'
+
+        - name: Upload Trivy scan results to GitHub Security tab
+          uses: github/codeql-action/upload-sarif@v2
+          with:
+            sarif_file: 'trivy-results.sarif'
+
+  static-code-analysis:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
         with:
-          sarif_file: 'trivy-results.sarif'
+          languages: "python"
+      - name: Run CodeQL
+        uses: github/codeql-action/analyze@v1
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Test the application
+        run: |
+         echo "test"
+
+  release:
+    name: Release Application
+    runs-on: ubuntu-latest
+    needs: [test, scan-image, static-code-analysis]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Push Docker Image to DockerHub
+        run: |
+          echo "test"
+
+  deploy:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: release
+    steps:
+      - name: Deploy to pre-production
+        run: |
+          echo "Deploying application..."
