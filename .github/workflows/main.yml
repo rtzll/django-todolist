@@ -21,6 +21,7 @@ jobs:
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+        continue-on-error: false # Stop workflow on error
 
   static-code-analysis:
     name: Static Code Analysis
@@ -37,8 +38,10 @@ jobs:
         uses: github/codeql-action/init@v2
         with:
           languages: "python,javascript"
+        continue-on-error: false # Stop workflow on error
       - name: Run CodeQL
         uses: github/codeql-action/analyze@v2
+        continue-on-error: false # Stop workflow on error
 
   run-tests:
       name: Django Unit Tests
@@ -68,7 +71,7 @@ jobs:
         - name: Run Django migrations
           run: python manage.py migrate
           env:
-            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }} # Added this line for SECRET_KEY
+            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY1 }}
         - name: Run Django tests
           run: python manage.py test
           env:
@@ -77,7 +80,8 @@ jobs:
             DJANGO_DB_PASSWORD: django
             DJANGO_DB_HOST: localhost
             DJANGO_DB_PORT: 5432
-            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }} # Added this line for SECRET_KEY
+            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        continue-on-error: false # Stop workflow on error
   
   build:
     name: Docker Build
@@ -100,6 +104,7 @@ jobs:
             echo "Failed to start Docker container."
             exit 1
           fi
+        continue-on-error: false # Stop workflow on error
 
   scan-image:
     name: Scan Docker Image
@@ -125,7 +130,9 @@ jobs:
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
+        continue-on-error: false # Stop workflow on error
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
+        continue-on-error: false # Stop workflow on error
