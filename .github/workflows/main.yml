@@ -21,6 +21,9 @@ jobs:
           GITHUB_PUSH_BASE_SHA: ${{ github.event.base }}
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
+      - name: Set scanning status
+        id: set-status
+        run: echo "scanning_status=${{ job.status }}" >> $GITHUB_ENV
 
   static-code-analysis:
     name: Static Code Analysis
@@ -39,6 +42,9 @@ jobs:
           languages: "python,javascript"
       - name: Run CodeQL
         uses: github/codeql-action/analyze@v2
+      - name: Set static-code-analysis status
+        id: set-status
+        run: echo "static_code_analysis_status=${{ job.status }}" >> $GITHUB_ENV
 
   run-tests:
       name: Django Unit Tests
@@ -68,7 +74,7 @@ jobs:
         - name: Run Django migrations
           run: python manage.py migrate
           env:
-            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }} # Added this line for SECRET_KEY
+            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
         - name: Run Django tests
           run: python manage.py test
           env:
@@ -77,8 +83,11 @@ jobs:
             DJANGO_DB_PASSWORD: django
             DJANGO_DB_HOST: localhost
             DJANGO_DB_PORT: 5432
-            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }} # Added this line for SECRET_KEY
-  
+            DJANGO_SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      - name: Set run-tests status
+        id: set-status
+        run: echo "run_tests_status=${{ job.status }}" >> $GITHUB_ENV
+
   build:
     name: Docker Build
     runs-on: ubuntu-latest
@@ -100,6 +109,9 @@ jobs:
             echo "Failed to start Docker container."
             exit 1
           fi
+      - name: Set build status
+        id: set-status
+        run: echo "build_status=${{ job.status }}" >> $GITHUB_ENV
 
   scan-image:
     name: Scan Docker Image
@@ -129,3 +141,24 @@ jobs:
         uses: github/codeql-action/upload-sarif@v2
         with:
           sarif_file: 'trivy-results.sarif'
+      - name: Set scan-image status
+        id: set-status
+        run: echo "scan_image_status=${{ job.status }}" >> $GITHUB_ENV
+
+  check-status:
+    name: Check Status and Terminate on Failure
+    runs-on: ubuntu-latest
+    needs: [scanning, static-code-analysis, run-tests, build, scan-image]
+    steps:
+      - name: Check job statuses
+        run: |
+          if [[ "${{ needs.scanning.outputs.scanning_status }}" == "failure" || \
+                "${{ needs.static-code-analysis.outputs.static_code_analysis_status }}" == "failure" || \
+                "${{ needs.run-tests.outputs.run_tests_status }}" == "failure" || \
+                "${{ needs.build.outputs.build_status }}" == "failure" || \
+                "${{ needs.scan-image.outputs.scan_image_status }}" == "failure" ]]; then
+            echo "One or more jobs failed. Terminating the workflow."
+            exit 1
+          else
+            echo "All jobs succeeded."
+          fi
