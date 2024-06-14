@@ -54,11 +54,25 @@ class RegistrationForm(forms.Form):
         )
     )
 
+    def validate_password_strength(self, password):
+        if len(password) < 8:
+            raise forms.ValidationError("Password must be at least 8 characters long.")
+        if not any(char.isdigit() for char in password):
+            raise forms.ValidationError("Password must contain at least one digit.")
+        if not any(char.islower() for char in password):
+            raise forms.ValidationError("Password must contain at least one lowercase letter.")
+        if not any(char.isupper() for char in password):
+            raise forms.ValidationError("Password must contain at least one uppercase letter.")
+
     def clean(self):
         password = self.cleaned_data.get("password")
         password_confirmation = self.cleaned_data.get("password_confirmation")
 
-        if password and password != password_confirmation:
-            raise forms.ValidationError("Passwords don't match.")
+        if password:
+            self.validate_password_strength(password)
+            if password != password_confirmation:
+                raise forms.ValidationError("Passwords don't match.")
 
         return self.cleaned_data
+
+
