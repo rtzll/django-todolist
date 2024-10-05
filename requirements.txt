@@ -8,13 +8,13 @@ asgiref==3.8.1
     # via
     #   -r requirements.in
     #   django
-django==5.1
+django==5.1.1
     # via
     #   -r requirements.in
     #   djangorestframework
 djangorestframework==3.15.2
     # via -r requirements.in
-pytz==2024.1
+pytz==2024.2
     # via -r requirements.in
 sqlparse==0.5.1
     # via
