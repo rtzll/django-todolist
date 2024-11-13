@@ -3,3 +3,4 @@ Django
 djangorestframework
 pytz
 sqlparse
+djangorestframework-simplejwt>=5.3.1
