@@ -8,7 +8,7 @@ asgiref==3.8.1
     # via
     #   -r requirements.in
     #   django
-django==5.1.4
+django==5.1.5
     # via
     #   -r requirements.in
     #   djangorestframework
