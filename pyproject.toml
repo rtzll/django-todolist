@@ -1,0 +1,13 @@
+[project]
+name = "django-todolist"
+version = "0.1.0"
+description = "Django Todo List application"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "asgiref",
+    "Django",
+    "djangorestframework",
+    "pytz",
+    "sqlparse",
+]

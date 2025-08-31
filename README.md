@@ -12,17 +12,17 @@ I've also build a quite similar app in Flask: https://github.com/rtzll/flask-tod
 
 
 ## Explore
-Try it out by installing the requirements. (Works only with python >= 3.8, due to Django 4)
+Try it out by installing the dependencies using [uv](https://docs.astral.sh/uv/).
 
-    pip install -r requirements.txt
+    uv sync
 
 Migrate:
 
-    python manage.py migrate
+    uv run python manage.py migrate
 
 And then start the server (default: http://localhost:8000)
 
-    python manage.py runserver
+    uv run python manage.py runserver
 
 
 Now you can browse the [API](http://localhost:8000/api/)
