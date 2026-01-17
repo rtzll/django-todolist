@@ -81,7 +81,6 @@ class AccountsTests(TestCase):
 
 
 class LoginFormTests(TestCase):
-
     # valid test case is covered by AccountsTests (because we need a user)
     def setUp(self):
         self.too_long_password = {"username": "test", "password": 65 * "X"}

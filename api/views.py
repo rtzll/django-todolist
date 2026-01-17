@@ -26,14 +26,12 @@ class IsCreatorOrReadOnly(permissions.BasePermission):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = (permissions.IsAdminUser,)
 
 
 class TodoListViewSet(viewsets.ModelViewSet):
-
     queryset = TodoList.objects.all()
     serializer_class = TodoListSerializer
     permission_classes = (IsCreatorOrReadOnly,)
@@ -45,7 +43,6 @@ class TodoListViewSet(viewsets.ModelViewSet):
 
 
 class TodoViewSet(viewsets.ModelViewSet):
-
     queryset = Todo.objects.all()
     serializer_class = TodoSerializer
     permission_classes = (IsCreatorOrReadOnly,)

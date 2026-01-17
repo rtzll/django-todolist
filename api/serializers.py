@@ -5,7 +5,6 @@ from lists.models import Todo, TodoList
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     todolists = serializers.PrimaryKeyRelatedField(
         many=True, queryset=TodoList.objects.all()
     )
@@ -16,7 +15,6 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class TodoListSerializer(serializers.ModelSerializer):
-
     creator = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
@@ -25,7 +23,6 @@ class TodoListSerializer(serializers.ModelSerializer):
 
 
 class TodoSerializer(serializers.ModelSerializer):
-
     creator = serializers.ReadOnlyField(source="creator.username")
 
     class Meta:
