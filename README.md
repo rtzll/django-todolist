@@ -27,3 +27,14 @@ And then start the server (default: http://localhost:8000)
 
 Now you can browse the [API](http://localhost:8000/api/) or start on the
 [landing page](http://localhost:8000/)
+
+## Tests
+
+Run the full test suite:
+
+    uv run python manage.py test
+
+Run tests for a specific app:
+
+    uv run python manage.py test api
+    uv run python manage.py test lists
