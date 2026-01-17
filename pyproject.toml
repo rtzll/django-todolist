@@ -12,7 +12,7 @@ dependencies = [
     "sqlparse",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "ruff",
 ]

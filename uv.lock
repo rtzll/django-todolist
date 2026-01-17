@@ -37,7 +37,7 @@ dependencies = [
     { name = "sqlparse" },
 ]
 
-[package.optional-dependencies]
+[package.dev-dependencies]
 dev = [
     { name = "ruff" },
 ]
@@ -48,10 +48,11 @@ requires-dist = [
     { name = "django" },
     { name = "djangorestframework" },
     { name = "pytz" },
-    { name = "ruff", marker = "extra == 'dev'" },
     { name = "sqlparse" },
 ]
-provides-extras = ["dev"]
+
+[package.metadata.requires-dev]
+dev = [{ name = "ruff" }]
 
 [[package]]
 name = "djangorestframework"
