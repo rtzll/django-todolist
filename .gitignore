@@ -21,3 +21,6 @@ results
 logs
 *.logs
 venv
+
+# Local settings
+local_settings.py
