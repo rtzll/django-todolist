@@ -38,3 +38,10 @@ Run tests for a specific app:
 
     uv run python manage.py test api
     uv run python manage.py test lists
+
+You can also use [just](https://github.com/casey/just) for common tasks:
+
+    just check    # run lint, format, dependency, Django, migration, and test checks
+    just test
+    just fix      # auto-fix lint and format issues
+    just update   # upgrade all dependencies

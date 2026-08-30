@@ -5,16 +5,14 @@ description = "Django Todo List application"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "asgiref",
-    "Django",
-    "djangorestframework",
-    "pytz",
-    "sqlparse",
+    "Django>=6.1",
+    "djangorestframework>=3.18.0",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff",
+    "deptry>=0.25.1",
+    "ruff>=0.16.5",
 ]
 
 [tool.ruff]

@@ -9,21 +9,33 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v10
 
       - name: Install dependencies
-        run: uv sync --group dev
+        run: uv sync --frozen --group dev
 
-      - name: Ruff check
+      - name: Ruff format check
+        run: uv run ruff format --check .
+
+      - name: Ruff lint
         run: uv run ruff check .
+
+      - name: Dependency check
+        run: uv run deptry .
+
+      - name: Django system check
+        run: uv run python manage.py check
+
+      - name: Migration check
+        run: uv run python manage.py makemigrations --check --dry-run
 
       - name: Run tests
         run: uv run python manage.py test

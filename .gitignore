@@ -21,3 +21,7 @@ results
 logs
 *.logs
 venv
+.venv
+.uv-cache
+.ruff_cache
+.pytest_cache
